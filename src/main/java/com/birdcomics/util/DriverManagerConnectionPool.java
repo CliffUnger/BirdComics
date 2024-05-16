@@ -38,6 +38,7 @@ public class DriverManagerConnectionPool {
     public static Connection createDBConnection() throws SQLException {
     	Connection newConnection = null;
 		String ip = "localhost";
+		
 		String port = "3306";
 		String db = "shopping-cart";
 		String username = "root";

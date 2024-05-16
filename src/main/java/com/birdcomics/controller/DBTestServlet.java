@@ -22,6 +22,7 @@ public class DBTestServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println("<html><head><title>Database Connection Test</title></head><body>");
 
+        
         try {
             Connection connection = DriverManagerConnectionPool.createDBConnection();
             if (connection != null) {
