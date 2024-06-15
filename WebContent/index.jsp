@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Finderbook</title>
+    <title>Birdcomics</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -71,7 +71,7 @@
 </head>
 <body>
 
-<%@ include file="header.jsp" %>
+<jsp:include page="./fragments/header.jsp" />
 
 <div class="container">
     <div class="row text-center" id="product-list">
@@ -79,7 +79,7 @@
     </div>
 </div>
 
-<%@ include file="footer.html" %>
+<%@ include file="./fragments/footer.html" %>
 
 </body>
 </html>
