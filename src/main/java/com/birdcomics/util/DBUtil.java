@@ -37,7 +37,7 @@ public class DBUtil {
         String port = "3306";
         String db = "shopping-cart";
         String username = "root";
-        String password = "24112015";
+        String password = "root";
 
         return DriverManager.getConnection(
             "jdbc:mysql://" + ip + ":" + port + "/" + db +
