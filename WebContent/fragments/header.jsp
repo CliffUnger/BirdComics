@@ -58,8 +58,6 @@
 					<c:otherwise>
 						<!-- Elementi comuni per utente loggato e non loggato -->
 						<li><a href="index.jsp">Home</a></li>
-						<li><a href="index.jsp">Libri</a></li>
-
 
 						<li class="dropdown" id="generi-dropdown"><a
 							class="dropdown-toggle" data-toggle="dropdown" href="#">Generi
