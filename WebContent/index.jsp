@@ -71,6 +71,7 @@
 </head>
 <body>
 
+
 <jsp:include page="./fragments/header.jsp" />
 
 <div class="container">
