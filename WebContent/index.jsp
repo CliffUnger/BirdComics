@@ -13,7 +13,7 @@
             // Function to load initial products
             function loadInitialProducts() {
                 $.ajax({
-                    url: "ProductListServlet", // Replace with your servlet URL
+                    url: "ProductListServlet",
                     method: "GET",
                     success: function(responseHtml) {
                         $("#product-list").html(responseHtml); // Update product list with received HTML
@@ -27,8 +27,7 @@
             // Call loadInitialProducts function on page load
             loadInitialProducts();
             
-            // Event listener for genre links (if needed)
-            // Replace with your specific functionality to handle genre filtering
+            // Event listener for genre links
             $('#generi-dropdown ul.dropdown-menu li a').on('click', function(e) {
                 e.preventDefault();
                 var type = $(this).data('type');
@@ -44,6 +43,23 @@
                     }
                 });
             });
+
+            // Event listener for search form
+            $('form[action="index.jsp"]').submit(function(e) {
+                e.preventDefault();
+                var searchQuery = $(this).find('.search-data').val();
+
+                $.ajax({
+                    url: 'ProductListServlet?search=' + encodeURIComponent(searchQuery),
+                    method: 'GET',
+                    success: function(responseHtml) {
+                        $("#product-list").html(responseHtml); // Update product list with search results
+                    },
+                    error: function() {
+                        console.error('Error fetching products for search query: ' + searchQuery);
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -53,7 +69,7 @@
 
 <div class="container">
     <div class="row text-center" id="product-list">
-        <%-- Questa sezione sarà popolata dinamicamente --%>
+        <%-- This section will be populated dynamically --%>
     </div>
 </div>
 

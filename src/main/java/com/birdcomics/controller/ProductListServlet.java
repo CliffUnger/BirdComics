@@ -27,9 +27,13 @@ public class ProductListServlet extends HttpServlet {
         response.setContentType("text/html;charset=ISO-8859-1");
 
         String typeParam = request.getParameter("type");
+        String searchParam = request.getParameter("search"); // Get search query parameter
+
         try {
             List<ProductBean> products;
-            if (typeParam != null && !typeParam.isEmpty()) {
+            if (searchParam != null && !searchParam.isEmpty()) {
+                products = productService.getProductsByName(searchParam); // Use ProductServiceDAO to search products by name
+            } else if (typeParam != null && !typeParam.isEmpty()) {
                 products = productService.getAllProductsByType(typeParam);
             } else {
                 products = productService.getAllProducts();
@@ -47,7 +51,7 @@ public class ProductListServlet extends HttpServlet {
                 out.println("<form method=\"post\" action=\"AddToCart\">");
                 out.println("<input type=\"hidden\" name=\"pid\" value=\"" + product.getProdId() + "\">");
                 out.println("<button type=\"submit\" class=\"btn btn-success\">Add to Cart</button>");
-                out.println("<input type=\"number\" name=\"pqty\" value=\"1\" min=\"1\" max=\"" + product.getProdQuantity() + "\">"); // Include la quantità con i limiti
+                out.println("<input type=\"number\" name=\"pqty\" value=\"1\" min=\"1\" max=\"" + product.getProdQuantity() + "\">");
                 out.println("</form>");
                 out.println("<br />");
                 out.println("</div>");

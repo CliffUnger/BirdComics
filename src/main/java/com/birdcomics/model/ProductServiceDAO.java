@@ -525,5 +525,41 @@ public class ProductServiceDAO  {
 
 		return quantity;
 	}
+	
+	 public List<ProductBean> getProductsByName(String name) throws SQLException {
+	        List<ProductBean> products = new ArrayList<>();
+
+	        Connection con = DBUtil.createDBConnection();
+	        PreparedStatement ps = null;
+	        ResultSet rs = null;
+
+	        try {
+	            ps = con.prepareStatement("SELECT * FROM product WHERE lower(pname) LIKE ?");
+	            ps.setString(1, "%" + name.toLowerCase() + "%");
+	            rs = ps.executeQuery();
+
+	            while (rs.next()) {
+	                ProductBean product = new ProductBean();
+	                product.setProdId(rs.getString("pid"));
+	                product.setProdName(rs.getString("pname"));
+	                product.setProdType(rs.getString("ptype"));
+	                product.setProdInfo(rs.getString("pinfo"));
+	                product.setProdPrice(rs.getDouble("pprice"));
+	                product.setProdQuantity(rs.getInt("pquantity"));
+	                // Assuming prodImage is stored as Blob or InputStream in the database
+	                // product.setProdImage(rs.getAsciiStream("image")); // Uncomment and adjust if needed
+
+	                products.add(product);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            DBUtil.closeConnection(con);
+	            DBUtil.closeConnection(ps);
+	            DBUtil.closeConnection(rs);
+	        }
+
+	        return products;
+	    }
 
 }
