@@ -12,9 +12,9 @@ public class UserServiceDAO {
 
 
 	public String registerUser(String userName, Long mobileNo, String emailId, String address, int pinCode,
-			String password) throws SQLException {
+			String password, String usertype) throws SQLException {
 
-		UserBean user = new UserBean(userName, mobileNo, emailId, address, pinCode, password);
+		UserBean user = new UserBean(userName, mobileNo, emailId, address, pinCode, password, usertype);
 
 		String status = registerUser(user);
 
@@ -223,5 +223,34 @@ public class UserServiceDAO {
 
 		return userAddr;
 	}
+	
+	public String getUserType(String emailId) throws SQLException {
+	    String userType = "";
+
+	    Connection con = DBUtil.createDBConnection();
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+
+	    try {
+	        ps = con.prepareStatement("select usertype from user where email=?");
+	        ps.setString(1, emailId);
+
+	        rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            userType = rs.getString(1);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.closeConnection(con);
+	        DBUtil.closeConnection(ps);
+	        DBUtil.closeConnection(rs);
+	    }
+
+	    return userType;
+	}
+
 
 }
