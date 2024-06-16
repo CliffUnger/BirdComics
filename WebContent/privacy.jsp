@@ -21,12 +21,12 @@
 	<div style="padding: 80px">
 
 	<header>
-        <h1>Informativa sulla privacy di Finderbook</h1>
+        <h1>Informativa sulla privacy di Birdcomics</h1>
     </header>
 
     <section>
         <h2>1. Introduzione</h2>
-        <p>Benvenuto nell'Informativa sulla privacy di Finderbook. Questa policy descrive come raccogliamo, utilizziamo e proteggiamo le tue informazioni personali quando utilizzi il nostro sito web.</p>
+        <p>Benvenuto nell'Informativa sulla privacy di Birdcomics. Questa policy descrive come raccogliamo, utilizziamo e proteggiamo le tue informazioni personali quando utilizzi il nostro sito web.</p>
     </section>
 
     <section>
