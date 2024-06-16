@@ -24,47 +24,51 @@ public class UserServiceDAO {
 	
 	public String registerUser(UserBean user) throws SQLException {
 
-		String status = "User Registration Failed!";
+	    String status = "User Registration Failed!";
 
-		boolean isRegtd = isRegistered(user.getEmail());
+	    boolean isRegtd = isRegistered(user.getEmail());
 
-		if (isRegtd) {
-			status = "Email Id Already Registered!";
-			return status;
-		}
-		Connection conn = DBUtil.createDBConnection();
-		PreparedStatement ps = null;
-		if (conn != null) {
-			System.out.println("Connected Successfully!");
-		}
+	    if (isRegtd) {
+	        status = "Email Id Already Registered!";
+	        return status;
+	    }
 
-		try {
+	    Connection conn = DBUtil.createDBConnection();
+	    PreparedStatement ps = null;
 
-			ps = conn.prepareStatement("insert into " + "user" + " values(?,?,?,?,?,?)");
+	    if (conn != null) {
+	        System.out.println("Connected Successfully!");
+	    }
 
-			ps.setString(1, user.getEmail());
-			ps.setString(2, user.getName());
-			ps.setLong(3, user.getMobile());
-			ps.setString(4, user.getAddress());
-			ps.setInt(5, user.getPinCode());
-			ps.setString(6, user.getPassword());
+	    try {
+	        // Modifica della query per includere il campo usertype
+	        ps = conn.prepareStatement("INSERT INTO user (email, name, mobile, address, pincode, password, usertype) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-			int k = ps.executeUpdate();
+	        ps.setString(1, user.getEmail());
+	        ps.setString(2, user.getName());
+	        ps.setLong(3, user.getMobile());
+	        ps.setString(4, user.getAddress());
+	        ps.setInt(5, user.getPinCode());
+	        ps.setString(6, user.getPassword());
+	        ps.setString(7, user.getUserType()); // Assumendo che getUserType() ritorni "guest"
 
-			if (k > 0) {
-				status = "User Registered Successfully!";
-			}
+	        int k = ps.executeUpdate();
 
-		} catch (SQLException e) {
-			status = "Error: " + e.getMessage();
-			e.printStackTrace();
-		}
+	        if (k > 0) {
+	            status = "User Registered Successfully!";
+	        }
 
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(ps);
+	    } catch (SQLException e) {
+	        status = "Error: " + e.getMessage();
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.closeConnection(ps);
+	        DBUtil.closeConnection(conn);
+	    }
 
-		return status;
+	    return status;
 	}
+
 
 	
 	public boolean isRegistered(String emailId) throws SQLException {
