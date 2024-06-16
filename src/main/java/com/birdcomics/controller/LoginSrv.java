@@ -1,6 +1,5 @@
 package com.birdcomics.controller;
 
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,93 +18,122 @@ import com.birdcomics.model.*;
  */
 @WebServlet("/LoginSrv")
 public class LoginSrv extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public LoginSrv() {
-		super();
-	}
+    public LoginSrv() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
-		String userType = request.getParameter("usertype");
-		response.setContentType("text/html");
+        String userName = request.getParameter("username");
+        String password = request.getParameter("password");
+        String userType = request.getParameter("usertype");
+        response.setContentType("text/html");
 
-		String status = "Login Denied! Invalid Username or password.";
+        String status = "Login Denied! Invalid Username or password.";
 
-		if (userType.equals("admin")) { // Login as Admin
+        if (userType.equals("admin")) { // Login as Admin
 
-			if (password.equals("admin") && userName.equals("admin@gmail.com")) {
-				// valid
+            UserServiceDAO udao = new UserServiceDAO();
 
-				RequestDispatcher rd = request.getRequestDispatcher("adminStock.jsp");
+            try {
+                status = udao.isValidCredential(userName, password);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-				HttpSession session = request.getSession();
+            if (status.equalsIgnoreCase("valid")) {
+                // valid user
 
-				session.setAttribute("username", userName);
-				session.setAttribute("password", password);
-				session.setAttribute("usertype", userType);
+                // Check if the user is an admin
+                try {
+					if (udao.getUserType(userName).equals("admin")) {
+					    // Admin login successful
 
-				rd.forward(request, response);
+					    UserBean user = null;
+					    try {
+					        user = udao.getUserDetails(userName, password);
+					    } catch (SQLException e) {
+					        e.printStackTrace();
+					    }
 
-			} else {
-				// Invalid;
-				RequestDispatcher rd = request.getRequestDispatcher("login.jsp?message=" + status);
-				rd.include(request, response);
-			}
+					    HttpSession session = request.getSession();
 
-		} else { // Login as customer
+					    session.setAttribute("userdata", user);
+					    session.setAttribute("username", userName);
+					    session.setAttribute("password", password);
+					    session.setAttribute("usertype", userType);
 
-			UserServiceDAO udao = new UserServiceDAO();
-
-			try {
-				status = udao.isValidCredential(userName, password);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (status.equalsIgnoreCase("valid")) {
-				// valid user
-
-				UserBean user = null;
-				try {
-					user = udao.getUserDetails(userName, password);
+					    RequestDispatcher rd = request.getRequestDispatcher("adminStock.jsp");
+					    rd.forward(request, response);
+					} else {
+					    // User is not admin, handle accordingly
+					    status = "Login Denied! You are not authorized as Admin.";
+					    RequestDispatcher rd = request.getRequestDispatcher("login.jsp?message=" + status);
+					    rd.include(request, response);
+					}
 				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				HttpSession session = request.getSession();
+            } else {
+                // Invalid credentials
+                RequestDispatcher rd = request.getRequestDispatcher("login.jsp?message=" + status);
+                rd.include(request, response);
+            }
 
-				session.setAttribute("userdata", user);
+        } else { // Login as customer
 
-				session.setAttribute("username", userName);
-				session.setAttribute("password", password);
-				session.setAttribute("usertype", userType);
+            UserServiceDAO udao = new UserServiceDAO();
 
-				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            try {
+                status = udao.isValidCredential(userName, password);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-				rd.forward(request, response);
+            if (status.equalsIgnoreCase("valid")) {
+                // valid user
 
-			} else {
-				// invalid user;
+                UserBean user = null;
+                try {
+                    user = udao.getUserDetails(userName, password);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
-				RequestDispatcher rd = request.getRequestDispatcher("login.jsp?message=" + status);
+                HttpSession session = request.getSession();
 
-				rd.forward(request, response);
+                session.setAttribute("userdata", user);
+                session.setAttribute("username", userName);
+                session.setAttribute("password", password);
+                session.setAttribute("usertype", userType);
 
-			}
-		}
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.forward(request, response);
 
-	}
+            } else {
+                // invalid user;
+                RequestDispatcher rd = request.getRequestDispatcher("login.jsp?message=" + status);
+                rd.include(request, response);
+            }
+        }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    }
 
-		doGet(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        doGet(request, response);
+    }
 
 }
