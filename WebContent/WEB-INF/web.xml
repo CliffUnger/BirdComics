@@ -18,7 +18,9 @@
         <url-pattern>/cartDetails.jsp</url-pattern>
     </filter-mapping>
 
-
-
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/orderDetails.jsp</url-pattern>
+    </filter-mapping>
   
 </web-app>
