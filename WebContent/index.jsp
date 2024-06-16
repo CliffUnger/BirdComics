@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,63 +8,43 @@
     <link rel="stylesheet" href="css/changes.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Funzione per caricare i prodotti iniziali senza filtro
-        loadInitialProducts();
-
-        // Gestisci il click sui link dei generi
-        var generiLinks = document.querySelectorAll('#generi-dropdown ul.dropdown-menu li a');
-        
-        generiLinks.forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault(); // Evita il comportamento predefinito del link
-                
-                var type = this.getAttribute('data-type'); // Ottieni il tipo di prodotto
-                
-                // Esegui una richiesta AJAX per ottenere i prodotti per il tipo selezionato
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            // Aggiorna la sezione dei prodotti con la risposta ottenuta
-                            var productList = document.getElementById('product-list');
-                            if (productList) {
-                                productList.innerHTML = xhr.responseText;
-                            }
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText);
-                        }
+        $(document).ready(function() {
+            // Function to load initial products
+            function loadInitialProducts() {
+                $.ajax({
+                    url: "ProductListServlet", // Replace with your servlet URL
+                    method: "GET",
+                    success: function(responseHtml) {
+                        $("#product-list").html(responseHtml); // Update product list with received HTML
+                    },
+                    error: function() {
+                        console.error("Error fetching initial products.");
                     }
-                };
+                });
+            }
+
+            // Call loadInitialProducts function on page load
+            loadInitialProducts();
+            
+            // Event listener for genre links (if needed)
+            // Replace with your specific functionality to handle genre filtering
+            $('#generi-dropdown ul.dropdown-menu li a').on('click', function(e) {
+                e.preventDefault();
+                var type = $(this).data('type');
                 
-                xhr.open('GET', 'ProductListServlet?type=' + encodeURIComponent(type), true);
-                xhr.send();
+                $.ajax({
+                    url: 'ProductListServlet?type=' + encodeURIComponent(type),
+                    method: 'GET',
+                    success: function(responseHtml) {
+                        $("#product-list").html(responseHtml); // Update product list with filtered products
+                    },
+                    error: function() {
+                        console.error('Error fetching products for type: ' + type);
+                    }
+                });
             });
         });
-    });
-
-    function loadInitialProducts() {
-        // Esegui una richiesta AJAX per ottenere tutti i prodotti iniziali senza filtro
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Aggiorna la sezione dei prodotti con la risposta ottenuta
-                    var productList = document.getElementById('product-list');
-                    if (productList) {
-                        productList.innerHTML = xhr.responseText;
-                    }
-                } else {
-                    console.error('Error:', xhr.status, xhr.statusText);
-                }
-            }
-        };
-        
-        xhr.open('GET', 'ProductListServlet', true);
-        xhr.send();
-    }
     </script>
 </head>
 <body>
