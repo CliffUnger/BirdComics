@@ -44,7 +44,7 @@ public class ProductListServlet extends HttpServlet {
                 String prodInfo = product.getProdInfo().length() > 100 ? product.getProdInfo().substring(0, 100) + ".." : product.getProdInfo();
                 out.println("<p class=\"productinfo\">" + prodInfo + "</p>");
                 out.println("<p class=\"price\">Rs " + product.getProdPrice() + "</p>");
-                out.println("<form method=\"post\" action=\"AddToCartAndCheckout\">");
+                out.println("<form method=\"post\" action=\"AddToCart\">");
                 out.println("<input type=\"hidden\" name=\"pid\" value=\"" + product.getProdId() + "\">");
                 out.println("<button type=\"submit\" class=\"btn btn-success\">Add to Cart</button>");
                 out.println("<input type=\"number\" name=\"pqty\" value=\"1\" min=\"1\" max=\"" + product.getProdQuantity() + "\">"); // Include la quantità con i limiti
