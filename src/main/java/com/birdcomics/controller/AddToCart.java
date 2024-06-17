@@ -95,7 +95,7 @@ public class AddToCart extends HttpServlet {
             }
 
             // Reindirizza alla pagina del carrello
-            response.sendRedirect("cartDetails.jsp");
+            response.sendRedirect("CartDetailsServlet");
         }
     }
 

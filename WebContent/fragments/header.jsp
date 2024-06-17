@@ -67,8 +67,8 @@
 								<li><a href="ProductListServlet?type=mbilee">Mobiles</a></li>
 								<li><a href="ProductListServlet?type=tv">TVs</a></li>
 								<li><a href="ProductListServlet?type=laptop">Laptops</a></li>
-
-
+		
+			
 								<!-- Add more genres as needed -->
 							</ul></li>
 
@@ -76,8 +76,9 @@
 						<c:choose>
 							<c:when test="${not empty sessionScope.usertype}">
 								<!-- Elementi specifici per utente loggato -->
-								<li><a href="cartDetails.jsp">Carrello</a></li>
-								<li><a href="orderDetails.jsp">Ordini</a></li>
+								<li><a href="CartDetailsServlet">Carrello</a></li>
+								<li><a href="OrderDetailsServlet">Ordini</a></li>
+
 								<li><a href="userProfile.jsp">Profilo</a></li>
 								<li><a href="./LogoutSrv">Logout</a></li>
 							</c:when>
@@ -98,10 +99,9 @@
 			<span class="fas fa-times"></span>
 		</div>
 		<form class="form-inline" action="ProductListServlet" method="get">
-			<input type="text" class="search-data form-control" name="search"
-				placeholder="Cerca libri..." required>
-			<button type="submit" class="fas fa-search"></button>
-		</form>
+    <input type="text" class="search-data form-control" name="search" placeholder="Cerca libri..." required>
+    <button type="submit" class="fas fa-search"></button>
+</form>
 
 	</nav>
 

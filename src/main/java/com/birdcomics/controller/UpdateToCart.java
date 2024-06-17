@@ -106,7 +106,7 @@ public class UpdateToCart extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher("cartDetails.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("CartDetailsServlet");
 
 			rd.include(request, response);
 
