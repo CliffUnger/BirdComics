@@ -1,79 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@ page
+    import="com.birdcomics.model.*,java.util.*,javax.servlet.ServletOutputStream,java.io.*"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Birdcomics</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/changes.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Function to load initial products
-            function loadInitialProducts() {
-                $.ajax({
-                    url: "ProductListServlet",
-                    method: "GET",
-                    success: function(responseHtml) {
-                        $("#product-list").html(responseHtml); // Update product list with received HTML
-                    },
-                    error: function() {
-                        console.error("Error fetching initial products.");
-                    }
-                });
-            }
-
-            // Call loadInitialProducts function on page load
-            loadInitialProducts();
-            
-            // Event listener for genre links
-            $('#generi-dropdown ul.dropdown-menu li a').on('click', function(e) {
-                e.preventDefault();
-                var type = $(this).data('type');
-                
-                $.ajax({
-                    url: 'ProductListServlet?type=' + encodeURIComponent(type),
-                    method: 'GET',
-                    success: function(responseHtml) {
-                        $("#product-list").html(responseHtml); // Update product list with filtered products
-                    },
-                    error: function() {
-                        console.error('Error fetching products for type: ' + type);
-                    }
-                });
-            });
-
-            // Event listener for search form
-            $('form[action="index.jsp"]').submit(function(e) {
-                e.preventDefault();
-                var searchQuery = $(this).find('.search-data').val();
-
-                $.ajax({
-                    url: 'ProductListServlet?search=' + encodeURIComponent(searchQuery),
-                    method: 'GET',
-                    success: function(responseHtml) {
-                        $("#product-list").html(responseHtml); // Update product list with search results
-                    },
-                    error: function() {
-                        console.error('Error fetching products for search query: ' + searchQuery);
-                    }
-                });
-            });
-        });
-    </script>
+<title>Birdcomics</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/changes.css">
+<script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<jsp:include page="./fragments/header.jsp" />
+    <%
+    /* Checking the user credentials */
+    String userName = (String) session.getAttribute("username");
+    String password = (String) session.getAttribute("password");
+    String userType = (String) session.getAttribute("usertype");
 
-<div class="container">
-    <div class="row text-center" id="product-list">
-        <%-- This section will be populated dynamically --%>
+    boolean isValidUser = true;
+
+    if (userType == null || userName == null || password == null || !userType.equals("customer")) {
+
+        isValidUser = false;
+    }
+
+    ProductServiceDAO prodDao = new ProductServiceDAO();
+    List<ProductBean> products = new ArrayList<ProductBean>();
+
+    String search = request.getParameter("search");
+    String type = request.getParameter("type");
+    String message = "All Products";
+    if (search != null) {
+        products = prodDao.searchAllProducts(search);
+        message = "Showing Results for '" + search + "'";
+    } else if (type != null) {
+        products = prodDao.getAllProductsByType(type);
+        message = "Showing Results for '" + type + "'";
+    } else {
+        products = prodDao.getAllProducts();
+    }
+    if (products.isEmpty()) {
+        message = "No items found for the search '" + (search != null ? search : type) + "'";
+        products = prodDao.getAllProducts();
+    }
+    %>
+
+    <jsp:include page="/fragments/header.jsp" />
+
+    <div class="text-center"
+        style="color: black; font-size: 14px; font-weight: bold;"><%=message%></div>
+    <div class="text-center" id="message"
+        style="color: black; font-size: 14px; font-weight: bold;"></div>
+    <!-- Start of Product Items List -->
+    <div class="container">
+        <div class="row text-center">
+
+            <%
+            for (ProductBean product : products) {
+                String prodInfo = product.getProdInfo().length() > 100 ? product.getProdInfo().substring(0, 100) + ".." : product.getProdInfo();
+            %>
+            <div class="col-sm-4" style='height: 350px;'>
+                <div class="thumbnail">
+                    <img src="./ShowImage?pid=<%=product.getProdId()%>" alt="Product"
+                        style="height: 150px; max-width: 180px">
+                    <p class="productname"><%=product.getProdName()%>
+                    </p>
+                    <p class="productinfo"><%=prodInfo%>
+                    </p>
+                    <p class="price">
+                        Rs
+                        <%=product.getProdPrice()%>
+                    </p>
+                    <form method="post" action="AddToCart">
+                        <input type="hidden" name="pid" value="<%=product.getProdId()%>">
+                        <button type="submit" class="btn btn-success">Add to Cart</button>
+                        <input type="number" name="pqty" value="1" min="1" max="<%=product.getProdQuantity()%>">
+                    </form>
+                    <br />
+                </div>
+            </div>
+
+            <%
+            }
+            %>
+
+        </div>
     </div>
-</div>
+    <!-- End of Product Items List -->
 
-<%@ include file="./fragments/footer.html" %>
+    <%@ include file="/fragments/footer.html"%>
 
 </body>
 </html>
