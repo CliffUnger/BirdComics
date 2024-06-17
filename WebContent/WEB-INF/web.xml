@@ -23,6 +23,11 @@
 
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
+		<url-pattern>/userProfile.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AuthenticationFilter</filter-name>
 		<url-pattern>/orderDetails.jsp</url-pattern>
 	</filter-mapping>
 
