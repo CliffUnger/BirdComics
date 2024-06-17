@@ -1,19 +1,10 @@
 package com.birdcomics.controller;
 
-
-
 import com.birdcomics.model.ProductBean;
 import com.birdcomics.model.ProductServiceDAO;
-
-import java.io.IOException;
-
-import com.birdcomics.model.ProductBean;
-import com.birdcomics.model.ProductServiceDAO;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,36 +17,46 @@ public class ProductListServlet extends HttpServlet {
     
     private ProductServiceDAO prodDao;
 
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-        	prodDao = new ProductServiceDAO();
-            List<ProductBean> products = prodDao.getAllProducts();
-            String message = "All Products";
+            prodDao = new ProductServiceDAO();
+            String type = request.getParameter("type");
+            String search = request.getParameter("search");
+            List<ProductBean> products;
+            String message;
+
+            if (type != null && !type.isEmpty()) {
+                products = prodDao.getAllProductsByType(type);
+                message = "Products in " + type;
+            } else if (search != null && !search.isEmpty()) {
+                products = prodDao.searchAllProducts(search);
+                message = "Search results for '" + search + "'";
+            } else {
+                products = prodDao.getAllProducts();
+                message = "All Products";
+            }
 
             if (products.isEmpty()) {
                 message = "No products found.";
             }
 
-            // Imposta gli attributi sulla richiesta per renderli disponibili nella JSP
+            // Set attributes on the request to make them available in the JSP
             request.setAttribute("products", products);
             request.setAttribute("message", message);
 
-            // Reindirizza alla tua index.jsp
+            // Forward to your index.jsp
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } catch (SQLException e) {
-            e.printStackTrace(); // Puoi gestire l'eccezione in modo appropriato
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Gestione delle richieste POST se necessario
         doGet(request, response);
     }
 
     public void destroy() {
-        // Chiudi eventuali risorse come il DAO quando la servlet viene distrutta
-
+        // Close resources like DAO when the servlet is destroyed
     }
 }

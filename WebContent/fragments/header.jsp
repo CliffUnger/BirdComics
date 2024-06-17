@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="com.birdcomics.model.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -63,14 +64,14 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="#" data-type="mobile">Mobiles</a></li>
-								<li><a href="#" data-type="tv">TVs</a></li>
-								<li><a href="#" data-type="laptop">Laptops</a></li>
-								<li><a href="index.jsp?type=camera" data-type="camera">Camera</a></li>
-								<li><a href="index.jsp?type=speaker" data-type="speaker">Speakers</a></li>
-								<li><a href="index.jsp?type=tablet" data-type="tablet">Tablets</a></li>
-								<!-- Altri tipi di prodotto -->
+								<li><a href="ProductListServlet?type=mbilee">Mobiles</a></li>
+								<li><a href="ProductListServlet?type=tv">TVs</a></li>
+								<li><a href="ProductListServlet?type=laptop">Laptops</a></li>
+
+
+								<!-- Add more genres as needed -->
 							</ul></li>
+
 
 						<c:choose>
 							<c:when test="${not empty sessionScope.usertype}">
@@ -96,11 +97,12 @@
 		<div class="cancel-icon">
 			<span class="fas fa-times"></span>
 		</div>
-		<form class="form-inline" action="index.jsp" method="get">
+		<form class="form-inline" action="ProductListServlet" method="get">
 			<input type="text" class="search-data form-control" name="search"
 				placeholder="Cerca libri..." required>
 			<button type="submit" class="fas fa-search"></button>
 		</form>
+
 	</nav>
 
 
