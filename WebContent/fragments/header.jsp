@@ -79,7 +79,7 @@
 								<li><a href="CartDetailsServlet">Carrello</a></li>
 								<li><a href="OrderDetailsServlet">Ordini</a></li>
 
-								<li><a href="userProfile.jsp">Profilo</a></li>
+								<li><a href="UserProfileServlet">Profilo</a></li>
 								<li><a href="./LogoutSrv">Logout</a></li>
 							</c:when>
 							<c:otherwise>
