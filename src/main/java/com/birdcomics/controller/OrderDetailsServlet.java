@@ -37,4 +37,9 @@ public class OrderDetailsServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
+	
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Chiama il metodo doGet per gestire le richieste POST in modo consistente con le richieste GET
+        doGet(request, response);
+    }
 }

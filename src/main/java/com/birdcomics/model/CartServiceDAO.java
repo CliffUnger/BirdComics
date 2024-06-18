@@ -49,15 +49,7 @@ public class CartServiceDAO  {
 							+ " are available in the shop! So we are adding only " + availableQty
 							+ " no of that item into Your Cart" + "";
 
-					DemandBean demandBean = new DemandBean(userId, product.getProdId(), prodQty - availableQty);
 
-					DemandServiceDAO demand = new DemandServiceDAO();
-
-					boolean flag = demand.addProduct(demandBean);
-
-					if (flag)
-						status += "<br/>Later, We Will Mail You when " + product.getProdName()
-								+ " will be available into the Store!";
 
 				} else {
 					status = updateProductToCart(userId, prodId, prodQty);

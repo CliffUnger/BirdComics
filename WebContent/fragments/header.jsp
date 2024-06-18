@@ -59,10 +59,8 @@
 						<!-- Elementi comuni per utente loggato e non loggato -->
 						<li><a href="index.jsp">Home</a></li>
 
-						<li class="dropdown" id="generi-dropdown"><a
-							class="dropdown-toggle" data-toggle="dropdown" href="#">Generi
-								<span class="caret"></span>
-						</a>
+						<li class="dropdown" id="generi-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Generi
+								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="ProductListServlet?type=mbilee">Mobiles</a></li>
 								<li><a href="ProductListServlet?type=tv">TVs</a></li>
@@ -78,7 +76,6 @@
 								<!-- Elementi specifici per utente loggato -->
 								<li><a href="CartDetailsServlet">Carrello</a></li>
 								<li><a href="OrderDetailsServlet">Ordini</a></li>
-
 								<li><a href="UserProfileServlet">Profilo</a></li>
 								<li><a href="./LogoutSrv">Logout</a></li>
 							</c:when>

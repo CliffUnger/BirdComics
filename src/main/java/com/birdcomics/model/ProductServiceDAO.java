@@ -392,7 +392,7 @@ public class ProductServiceDAO  {
 
 		PreparedStatement ps = null;
 
-		try {
+	
 			ps = con.prepareStatement("update product set pname=?,ptype=?,pinfo=?,pprice=?,pquantity=? where pid=?");
 
 			ps.setString(1, updatedProduct.getProdName());
@@ -407,26 +407,13 @@ public class ProductServiceDAO  {
 			if ((k > 0) && (prevQuantity < updatedProduct.getProdQuantity())) {
 				status = "Product Updated Successfully!";
 				// System.out.println("updated!");
-				List<DemandBean> demandList = new DemandServiceDAO().haveDemanded(prevProductId);
-
-				for (DemandBean demand : demandList) {
-
-					String userFName = new UserServiceDAO().getFName(demand.getUserName());
-					boolean flag = new DemandServiceDAO().removeProduct(demand.getUserName(), prevProductId);
-
-					if (flag)
-						status += " And Mail Send to the customers who were waiting for this product!";
-				}
-			} else if (k > 0)
-				status = "Product Updated Successfully!";
-			else
+		
+			}
+			else {
 				status = "Product Not available in the store!";
+			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		DBUtil.closeConnection(con);
 		DBUtil.closeConnection(ps);
 		// System.out.println("Prod Update status : "+status);
@@ -561,5 +548,40 @@ public class ProductServiceDAO  {
 
 	        return products;
 	    }
+
+
+	 public ProductBean getProductsByID(String productid) throws SQLException {
+		    ProductBean product = null;
+
+		    Connection con = DBUtil.createDBConnection();
+		    PreparedStatement ps = null;
+		    ResultSet rs = null;
+
+		    try {
+		        ps = con.prepareStatement("SELECT * FROM product WHERE pid=?");
+		        ps.setString(1, productid);
+		        rs = ps.executeQuery();
+
+		        if (rs.next()) {
+		            product = new ProductBean();
+		            product.setProdId(rs.getString("pid"));
+		            product.setProdName(rs.getString("pname"));
+		            product.setProdType(rs.getString("ptype"));
+		            product.setProdInfo(rs.getString("pinfo"));
+		            product.setProdPrice(rs.getDouble("pprice"));
+		            product.setProdQuantity(rs.getInt("pquantity"));
+		            product.setProdImage(rs.getAsciiStream("image"));
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        DBUtil.closeConnection(con);
+		        DBUtil.closeConnection(ps);
+		        DBUtil.closeConnection(rs);
+		    }
+
+		    return product;
+		}
 
 }

@@ -67,19 +67,6 @@ public class AddToCart extends HttpServlet {
                 e.printStackTrace();
             }
 
-            // Calcola la quantità che non è stata aggiunta a causa della limitazione di disponibilità
-            int remainingQty = pQty - (availableQty - cartQty);
-
-            // Crea una bean di domanda per registrare la richiesta del prodotto non disponibile
-            DemandBean demandBean = new DemandBean(userName, product.getProdId(), remainingQty);
-            DemandServiceDAO demand = new DemandServiceDAO();
-            
-            try {
-                demand.addProduct(demandBean);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
             String status = "La quantità richiesta di " + product.getProdName() + " non è disponibile al momento. "
                             + "Abbiamo aggiunto solo " + availableQty + " unità al tuo carrello. "
                             + "Ti avviseremo quando il prodotto sarà disponibile nuovamente.";

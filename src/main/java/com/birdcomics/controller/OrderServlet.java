@@ -26,12 +26,7 @@ public class OrderServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		String userName = (String) session.getAttribute("username");
-		String password = (String) session.getAttribute("password");
 
-		if (userName == null || password == null) {
-
-			response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
-		}
 
 		double paidAmount = Double.parseDouble(request.getParameter("amount"));
 		String status = null;

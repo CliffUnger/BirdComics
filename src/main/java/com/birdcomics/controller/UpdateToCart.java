@@ -75,22 +75,6 @@ public class UpdateToCart extends HttpServlet {
 					+ " are available in the shop! So we are adding only " + availableQty + " products into Your Cart"
 					+ "";
 
-			DemandBean demandBean = new DemandBean(userName, product.getProdId(), pQty - availableQty);
-
-			DemandServiceDAO demand = new DemandServiceDAO();
-
-			boolean flag = false;
-			try {
-				flag = demand.addProduct(demandBean);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (flag)
-				status += "<br/>Later, We Will Mail You when " + product.getProdName()
-						+ " will be available into the Store!";
-
 			RequestDispatcher rd = request.getRequestDispatcher("cartDetails.jsp");
 
 			rd.include(request, response);

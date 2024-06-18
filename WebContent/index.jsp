@@ -40,8 +40,9 @@
         %>
             <div class="col-sm-4" style='height: 350px;'>
                 <div class="thumbnail">
-                    <img src="./ShowImage?pid=<%= product.getProdId() %>" alt="Product"
-                         style="height: 150px; max-width: 180px">
+                    <a href="./SingleProductServlet?pid=<%= product.getProdId() %>">
+            <img src="./ShowImage?pid=<%= product.getProdId() %>" alt="Product" style="height: 150px; max-width: 180px">
+        </a>
                     <p class="productname"><%= product.getProdName() %></p>
                     <p class="productinfo">
                         <%-- Display first 100 characters of prodInfo followed by "..." if longer --%>
