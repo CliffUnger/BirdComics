@@ -8,9 +8,6 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-
-	<!-- Altri elementi di configurazione -->
-
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>com.birdcomics.controller.AuthenticationFilter</filter-class>
@@ -29,6 +26,11 @@
 	<filter-mapping>
 		<filter-name>AdminFilter</filter-name>
 		<url-pattern>/addProduct.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/removeProduct.jsp</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>
