@@ -15,25 +15,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<%
-	/* Checking the user credentials */
-	String userType = (String) session.getAttribute("usertype");
-	String userName = (String) session.getAttribute("username");
-	String password = (String) session.getAttribute("password");
-
-	if (userType == null || !userType.equals("admin")) {
-
-		response.sendRedirect("login.jsp?message=Access Denied, Login as admin!!");
-
-	}
-
-	else if (userName == null || password == null) {
-
-		response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
-
-	}
-	%>
-
 	<jsp:include page="/fragments/header.jsp" />
 
 	<%
