@@ -1013,3 +1013,112 @@ nav {
     color: #ff3d00;
 }
 
+.prod-container {
+    display: flex;
+    padding: 30px;
+    background-color: white;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-column img {
+    max-width: 70%; /* Adjust the width as needed */
+    max-height: 300px; /* Adjust the height as needed */
+    height: auto;
+    border-radius: 8px;
+}
+
+.right-column {
+    flex: 1;
+    padding: 20px;
+}
+
+.product-description span {
+    font-size: 15px;
+    color: #358ED7;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.product-description h3 {
+    font-weight: 300;
+    font-size: 32px;
+    color: #43484D;
+    letter-spacing: -1px;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.product-price span {
+    font-size: 26px;
+    font-weight: 300;
+    color: #43474D;
+    margin-right: 20px;
+}
+
+.product-price form {
+    display: flex;
+    align-items: center;
+}
+
+.product-price input[type="number"] {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.product-price button {
+    background-color: #7DC855;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-price button:hover {
+    background-color: #64af3d;
+}
+
+.product-description-down {
+    background: white;
+    padding: 30px;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 24px;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 800px) {
+    .prod-container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .left-column,
+    .right-column {
+        width: 100%;
+    }
+
+    .left-column img {
+        max-height: 200px; /* Adjusted for smaller screens */
+    }
+}
