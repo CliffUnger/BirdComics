@@ -23,7 +23,7 @@
     <div class="container">
         <div class="row"
             style="margin-top: 35px; margin-left: 2px; margin-right: 2px; margin-bottom: 35px">
-            <form action="./OrderDetailsServlet" method="post"
+            <form action="./OrderServlet" method="post"
                 class="col-md-6 col-md-offset-3">
                 <div style="font-weight: bold;" class="text-center">
                     <div class="form-group">

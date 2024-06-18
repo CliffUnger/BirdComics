@@ -52,7 +52,6 @@
 								<li><a href="unshippedItems.jsp">Ordini da spedire</a></li>
 								<li><a href="shippedItems.jsp">Ordini spediti</a></li>
 							</ul></li>
-						<li><a href="userHome.jsp?type=mobile">Gestione utenti</a></li>
 						<li><a href="./LogoutSrv">Logout</a></li>
 					</c:when>
 					<c:otherwise>

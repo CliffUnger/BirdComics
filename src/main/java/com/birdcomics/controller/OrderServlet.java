@@ -3,6 +3,7 @@ package com.birdcomics.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.birdcomics.model.OrderDetailsBean;
 import com.birdcomics.model.OrderServiceDAO;
 
 /**
@@ -39,12 +41,19 @@ public class OrderServlet extends HttpServlet {
 
 		PrintWriter pw = response.getWriter();
 		response.setContentType("text/html");
+		 OrderServiceDAO dao = new OrderServiceDAO();
+		 List<OrderDetailsBean> orders;
+			try {
+				orders = dao.getAllOrderDetails(userName);
+				 request.setAttribute("orders", orders);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        
+         request.getRequestDispatcher("/orderDetails.jsp").forward(request, response);
 
-		RequestDispatcher rd = request.getRequestDispatcher("orderDetails.jsp");
 
-		rd.include(request, response);
-
-		pw.println("<script>document.getElementById('message').innerHTML='" + status + "'</script>");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
