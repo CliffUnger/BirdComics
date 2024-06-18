@@ -33,6 +33,13 @@
 		<url-pattern>/removeProduct.jsp</url-pattern>
 	</filter-mapping>
 
+	
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/updateProductById.jsp</url-pattern>
+	</filter-mapping>
+
+
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
 		<url-pattern>/cartDetails.jsp</url-pattern>
