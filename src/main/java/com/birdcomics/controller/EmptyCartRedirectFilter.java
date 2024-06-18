@@ -3,13 +3,11 @@ package com.birdcomics.controller;
 import com.birdcomics.model.CartServiceDAO;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebFilter("/payment.jsp")
 public class EmptyCartRedirectFilter implements Filter {
 
     private CartServiceDAO cartService;
