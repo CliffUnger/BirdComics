@@ -1,15 +1,20 @@
 package com.birdcomics.controller;
 
-import com.birdcomics.model.ProductBean;
-import com.birdcomics.model.ProductServiceDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.birdcomics.model.ProductServiceDAO;
+import com.birdcomics.model.*;
+import java.util.List;
+
+import com.google.gson.Gson;
 
 @WebServlet("/ProductListServlet")
 public class ProductListServlet extends HttpServlet {
@@ -44,8 +49,25 @@ public class ProductListServlet extends HttpServlet {
             request.setAttribute("products", products);
             request.setAttribute("message", message);
 
-            // Forward to your index.jsp
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            // Check if it's an AJAX request
+            if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                // Set content type and write JSON response
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                
+                // Create a JSON object or array to send back
+                // Here, assuming JSON response format
+                Gson gson = new Gson();
+                String jsonProducts = gson.toJson(products);
+                
+                // Write JSON response to the client
+                PrintWriter out = response.getWriter();
+                out.print(jsonProducts);
+                out.flush();
+            } else {
+                // Forward to your index.jsp for non-AJAX requests
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
