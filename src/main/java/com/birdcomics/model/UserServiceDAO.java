@@ -231,26 +231,17 @@ public class UserServiceDAO {
 	public String getUserType(String emailId) throws SQLException {
 	    String userType = "";
 
-	    Connection con = DBUtil.createDBConnection();
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
+	    try (Connection con = DBUtil.createDBConnection();
+	         PreparedStatement ps = con.prepareStatement("select usertype from user where email=?")) {
 
-	    try {
-	        ps = con.prepareStatement("select usertype from user where email=?");
 	        ps.setString(1, emailId);
-
-	        rs = ps.executeQuery();
-
-	        if (rs.next()) {
-	            userType = rs.getString(1);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                userType = rs.getString("usertype");
+	            }
 	        }
-
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    } finally {
-	        DBUtil.closeConnection(con);
-	        DBUtil.closeConnection(ps);
-	        DBUtil.closeConnection(rs);
 	    }
 
 	    return userType;
