@@ -1,6 +1,5 @@
 package com.birdcomics.model;
 
-
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,576 +11,543 @@ import java.util.List;
 import com.birdcomics.util.DBUtil;
 import com.birdcomics.util.IDUtil;
 
+public class ProductServiceDAO {
 
-public class ProductServiceDAO  {
+    public String addProduct(String prodName, String prodType, String prodInfo, double prodPrice, int prodQuantity,
+            InputStream prodImage) throws SQLException {
+        String status = null;
+        String prodId = IDUtil.generateId();
 
-	
-	public String addProduct(String prodName, String prodType, String prodInfo, double prodPrice, int prodQuantity,
-			InputStream prodImage) throws SQLException {
-		String status = null;
-		String prodId = IDUtil.generateId();
+        ProductBean product = new ProductBean(prodId, prodName, prodType, prodInfo, prodPrice, prodQuantity, prodImage);
 
-		ProductBean product = new ProductBean(prodId, prodName, prodType, prodInfo, prodPrice, prodQuantity, prodImage);
+        status = addProduct(product);
 
-		status = addProduct(product);
+        return status;
+    }
 
-		return status;
-	}
+    public String addProduct(ProductBean product) throws SQLException {
+        String status = "Product Registration Failed!";
 
-	
-	public String addProduct(ProductBean product) throws SQLException {
-		String status = "Product Registration Failed!";
+        if (product.getProdId() == null)
+            product.setProdId(IDUtil.generateId());
 
-		if (product.getProdId() == null)
-			product.setProdId(IDUtil.generateId());
+        Connection con = DBUtil.createDBConnection();
 
-		Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
 
-		PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement("insert into product values(?,?,?,?,?,?,?, 1);");
+            ps.setString(1, product.getProdId());
+            ps.setString(2, product.getProdName());
+            ps.setString(3, product.getProdType());
+            ps.setString(4, product.getProdInfo());
+            ps.setDouble(5, product.getProdPrice());
+            ps.setInt(6, product.getProdQuantity());
+            ps.setBlob(7, product.getProdImage());
 
-		try {
-			ps = con.prepareStatement("insert into product values(?,?,?,?,?,?,?);");
-			ps.setString(1, product.getProdId());
-			ps.setString(2, product.getProdName());
-			ps.setString(3, product.getProdType());
-			ps.setString(4, product.getProdInfo());
-			ps.setDouble(5, product.getProdPrice());
-			ps.setInt(6, product.getProdQuantity());
-			ps.setBlob(7, product.getProdImage());
+            int k = ps.executeUpdate();
 
-			int k = ps.executeUpdate();
+            if (k > 0) {
 
-			if (k > 0) {
+                status = "Product Added Successfully with Product Id: " + product.getProdId();
 
-				status = "Product Added Successfully with Product Id: " + product.getProdId();
+            } else {
 
-			} else {
+                status = "Product Updation Failed!";
+            }
 
-				status = "Product Updation Failed!";
-			}
+        } catch (SQLException e) {
+            status = "Error: " + e.getMessage();
+            e.printStackTrace();
+        }
 
-		} catch (SQLException e) {
-			status = "Error: " + e.getMessage();
-			e.printStackTrace();
-		}
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
+        return status;
+    }
 
-		return status;
-	}
+    public String removeProduct(String prodId) throws SQLException {
+        String status = "Product Removal Failed!";
 
-	
-	public String removeProduct(String prodId) throws SQLException {
-		String status = "Product Removal Failed!";
+        Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
 
-		Connection con = DBUtil.createDBConnection();
+        try {
+            ps = con.prepareStatement("UPDATE product SET active = 0 WHERE pid = ?");
+            ps.setString(1, prodId);
 
-		PreparedStatement ps = null;
-		PreparedStatement ps2 = null;
+            int k = ps.executeUpdate();
 
-		try {
-			ps = con.prepareStatement("delete from product where pid=?");
-			ps.setString(1, prodId);
+            if (k > 0) {
+                status = "Product Set as Inactive Successfully!";
+            }
 
-			int k = ps.executeUpdate();
+        } catch (SQLException e) {
+            status = "Error: " + e.getMessage();
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+        }
 
-			if (k > 0) {
-				status = "Product Removed Successfully!";
+        return status;
+    }
 
-				ps2 = con.prepareStatement("delete from usercart where prodid=?");
+    public String updateProduct(ProductBean prevProduct, ProductBean updatedProduct) throws SQLException {
+        String status = "Product Updation Failed!";
 
-				ps2.setString(1, prodId);
+        if (!prevProduct.getProdId().equals(updatedProduct.getProdId())) {
 
-				ps2.executeUpdate();
+            status = "Both Products are Different, Updation Failed!";
 
-			}
+            return status;
+        }
 
-		} catch (SQLException e) {
-			status = "Error: " + e.getMessage();
-			e.printStackTrace();
-		}
+        Connection con = DBUtil.createDBConnection();
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(ps2);
+        PreparedStatement ps = null;
 
-		return status;
-	}
+        try {
+            ps = con.prepareStatement(
+                    "update product set pname=?,ptype=?,pinfo=?,pprice=?,pquantity=?,image=? where pid=?");
 
-	
-	public String updateProduct(ProductBean prevProduct, ProductBean updatedProduct) throws SQLException {
-		String status = "Product Updation Failed!";
+            ps.setString(1, updatedProduct.getProdName());
+            ps.setString(2, updatedProduct.getProdType());
+            ps.setString(3, updatedProduct.getProdInfo());
+            ps.setDouble(4, updatedProduct.getProdPrice());
+            ps.setInt(5, updatedProduct.getProdQuantity());
+            ps.setBlob(6, updatedProduct.getProdImage());
+            ps.setString(7, prevProduct.getProdId());
 
-		if (!prevProduct.getProdId().equals(updatedProduct.getProdId())) {
+            int k = ps.executeUpdate();
 
-			status = "Both Products are Different, Updation Failed!";
+            if (k > 0)
+                status = "Product Updated Successfully!";
 
-			return status;
-		}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		Connection con = DBUtil.createDBConnection();
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
 
-		PreparedStatement ps = null;
+        return status;
+    }
 
-		try {
-			ps = con.prepareStatement(
-					"update product set pname=?,ptype=?,pinfo=?,pprice=?,pquantity=?,image=? where pid=?");
+    public String updateProductPrice(String prodId, double updatedPrice) throws SQLException {
+        String status = "Price Updation Failed!";
 
-			ps.setString(1, updatedProduct.getProdName());
-			ps.setString(2, updatedProduct.getProdType());
-			ps.setString(3, updatedProduct.getProdInfo());
-			ps.setDouble(4, updatedProduct.getProdPrice());
-			ps.setInt(5, updatedProduct.getProdQuantity());
-			ps.setBlob(6, updatedProduct.getProdImage());
-			ps.setString(7, prevProduct.getProdId());
+        Connection con = DBUtil.createDBConnection();
 
-			int k = ps.executeUpdate();
+        PreparedStatement ps = null;
 
-			if (k > 0)
-				status = "Product Updated Successfully!";
+        try {
+            ps = con.prepareStatement("update product set pprice=? where pid=?");
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            ps.setDouble(1, updatedPrice);
+            ps.setString(2, prodId);
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
+            int k = ps.executeUpdate();
 
-		return status;
-	}
+            if (k > 0)
+                status = "Price Updated Successfully!";
+        } catch (SQLException e) {
+            status = "Error: " + e.getMessage();
+            e.printStackTrace();
+        }
 
-	
-	public String updateProductPrice(String prodId, double updatedPrice) throws SQLException {
-		String status = "Price Updation Failed!";
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
 
-		Connection con = DBUtil.createDBConnection();
+        return status;
+    }
 
-		PreparedStatement ps = null;
+    public List<ProductBean> getAllProducts() throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
 
-		try {
-			ps = con.prepareStatement("update product set pprice=? where pid=?");
+        Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = con.prepareStatement("SELECT * FROM product WHERE active = 1");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ProductBean product = new ProductBean();
+                product.setProdId(rs.getString(1));
+                product.setProdName(rs.getString(2));
+                product.setProdType(rs.getString(3));
+                product.setProdInfo(rs.getString(4));
+                product.setProdPrice(rs.getDouble(5));
+                product.setProdQuantity(rs.getInt(6));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream(7)); // Uncomment and adjust if needed
+
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
+
+        return products;
+    }
 
-			ps.setDouble(1, updatedPrice);
-			ps.setString(2, prodId);
+    public List<ProductBean> getAllProductsByType(String type) throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
 
-			int k = ps.executeUpdate();
+        Connection con = DBUtil.createDBConnection();
 
-			if (k > 0)
-				status = "Price Updated Successfully!";
-		} catch (SQLException e) {
-			status = "Error: " + e.getMessage();
-			e.printStackTrace();
-		}
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
+        try {
+            ps = con.prepareStatement("SELECT * FROM product WHERE lower(ptype) LIKE ? AND active = 1");
+            ps.setString(1, "%" + type.toLowerCase() + "%");
+            rs = ps.executeQuery();
 
-		return status;
-	}
+            while (rs.next()) {
 
-	
-	public List<ProductBean> getAllProducts() throws SQLException {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+                ProductBean product = new ProductBean();
 
-		Connection con = DBUtil.createDBConnection();
+                product.setProdId(rs.getString(1));
+                product.setProdName(rs.getString(2));
+                product.setProdType(rs.getString(3));
+                product.setProdInfo(rs.getString(4));
+                product.setProdPrice(rs.getDouble(5));
+                product.setProdQuantity(rs.getInt(6));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream(7)); // Uncomment and adjust if needed
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+                products.add(product);
 
-		try {
-			ps = con.prepareStatement("select * from product");
+            }
 
-			rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			while (rs.next()) {
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
+        DBUtil.closeConnection(rs);
 
-				ProductBean product = new ProductBean();
+        return products;
+    }
 
-				product.setProdId(rs.getString(1));
-				product.setProdName(rs.getString(2));
-				product.setProdType(rs.getString(3));
-				product.setProdInfo(rs.getString(4));
-				product.setProdPrice(rs.getDouble(5));
-				product.setProdQuantity(rs.getInt(6));
-				product.setProdImage(rs.getAsciiStream(7));
+    public List<ProductBean> searchAllProducts(String search) throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
 
-				products.add(product);
+        Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = con.prepareStatement(
+                "SELECT p.pid, p.pname, p.ptype, p.pinfo, p.pprice, p.pquantity, p.image " +
+                "FROM product p " +
+                "WHERE (lower(p.ptype) LIKE ? OR lower(p.pname) LIKE ? OR lower(p.pinfo) LIKE ?) " +
+                "AND p.active = 1");
+
+            search = "%" + search.toLowerCase() + "%";
+            ps.setString(1, search);
+            ps.setString(2, search);
+            ps.setString(3, search);
 
-			}
+            rs = ps.executeQuery();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            while (rs.next()) {
+                ProductBean product = new ProductBean();
+                product.setProdId(rs.getString("pid"));
+                product.setProdName(rs.getString("pname"));
+                product.setProdType(rs.getString("ptype"));
+                product.setProdInfo(rs.getString("pinfo"));
+                product.setProdPrice(rs.getDouble("pprice"));
+                product.setProdQuantity(rs.getInt("pquantity"));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream("image")); // Uncomment and adjust if needed
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(rs);
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-		return products;
-	}
+        return products;
+    }
 
-	
-	public List<ProductBean> getAllProductsByType(String type) throws SQLException {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+    public byte[] getImage(String prodId) throws SQLException {
+        byte[] image = null;
 
-		Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.createDBConnection();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		try {
-			ps = con.prepareStatement("SELECT * FROM `shopping-cart`.product where lower(ptype) like ?;");
-			ps.setString(1, "%" + type + "%");
-			rs = ps.executeQuery();
+        try {
+            ps = con.prepareStatement("select image from product where pid=? AND active = 1");
 
-			while (rs.next()) {
+            ps.setString(1, prodId);
 
-				ProductBean product = new ProductBean();
+            rs = ps.executeQuery();
 
-				product.setProdId(rs.getString(1));
-				product.setProdName(rs.getString(2));
-				product.setProdType(rs.getString(3));
-				product.setProdInfo(rs.getString(4));
-				product.setProdPrice(rs.getDouble(5));
-				product.setProdQuantity(rs.getInt(6));
-				product.setProdImage(rs.getAsciiStream(7));
+            if (rs.next())
+                image = rs.getBytes("image");
 
-				products.add(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			}
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
+        DBUtil.closeConnection(rs);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        return image;
+    }
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(rs);
+    public ProductBean getProductDetails(String prodId) throws SQLException {
+        ProductBean product = null;
 
-		return products;
-	}
+        Connection con = DBUtil.createDBConnection();
 
-	
-	public List<ProductBean> searchAllProducts(String search) throws SQLException {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		Connection con = DBUtil.createDBConnection();
+        try {
+            ps = con.prepareStatement("select * from product where pid=? AND active = 1");
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+            ps.setString(1, prodId);
+            rs = ps.executeQuery();
 
-		try {
-			ps = con.prepareStatement(
-					"SELECT * FROM `shopping-cart`.product where lower(ptype) like ? or lower(pname) like ? or lower(pinfo) like ?");
-			search = "%" + search + "%";
-			ps.setString(1, search);
-			ps.setString(2, search);
-			ps.setString(3, search);
-			rs = ps.executeQuery();
+            if (rs.next()) {
+                product = new ProductBean();
+                product.setProdId(rs.getString(1));
+                product.setProdName(rs.getString(2));
+                product.setProdType(rs.getString(3));
+                product.setProdInfo(rs.getString(4));
+                product.setProdPrice(rs.getDouble(5));
+                product.setProdQuantity(rs.getInt(6));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream(7)); // Uncomment and adjust if needed
+            }
 
-			while (rs.next()) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-				ProductBean product = new ProductBean();
+        return product;
+    }
 
-				product.setProdId(rs.getString(1));
-				product.setProdName(rs.getString(2));
-				product.setProdType(rs.getString(3));
-				product.setProdInfo(rs.getString(4));
-				product.setProdPrice(rs.getDouble(5));
-				product.setProdQuantity(rs.getInt(6));
-				product.setProdImage(rs.getAsciiStream(7));
+    public String updateProductWithoutImage(String prevProductId, ProductBean updatedProduct) throws SQLException {
+        String status = "Product Updation Failed!";
 
-				products.add(product);
+        if (!prevProductId.equals(updatedProduct.getProdId())) {
 
-			}
+            status = "Both Products are Different, Update Failed!";
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            return status;
+        }
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(rs);
+        Connection con = DBUtil.createDBConnection();
 
-		return products;
-	}
+        PreparedStatement ps = null;
 
-	
-	public byte[] getImage(String prodId) throws SQLException {
-		byte[] image = null;
+        try {
+            ps = con.prepareStatement("update product set pname=?,ptype=?,pinfo=?,pprice=?,pquantity=? where pid=? AND active = 1");
 
-		Connection con = DBUtil.createDBConnection();
+            ps.setString(1, updatedProduct.getProdName());
+            ps.setString(2, updatedProduct.getProdType());
+            ps.setString(3, updatedProduct.getProdInfo());
+            ps.setDouble(4, updatedProduct.getProdPrice());
+            ps.setInt(5, updatedProduct.getProdQuantity());
+            ps.setString(6, prevProductId);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+            int k = ps.executeUpdate();
 
-		try {
-			ps = con.prepareStatement("select image from product where  pid=?");
+            if (k > 0)
+                status = "Product Updated Successfully!";
 
-			ps.setString(1, prodId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			rs = ps.executeQuery();
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
 
-			if (rs.next())
-				image = rs.getBytes("image");
+        return status;
+    }
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public double getProductPrice(String prodId) throws SQLException {
+        double price = 0;
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		DBUtil.closeConnection(rs);
+        Connection con = DBUtil.createDBConnection();
 
-		return image;
-	}
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-	
-	public ProductBean getProductDetails(String prodId) throws SQLException {
-		ProductBean product = null;
+        try {
+            ps = con.prepareStatement("select * from product where pid=? AND active = 1");
 
-		Connection con = DBUtil.createDBConnection();
+            ps.setString(1, prodId);
+            rs = ps.executeQuery();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+            if (rs.next()) {
+                price = rs.getDouble("pprice");
+            }
 
-		try {
-			ps = con.prepareStatement("select * from product where pid=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-			ps.setString(1, prodId);
-			rs = ps.executeQuery();
+        return price;
+    }
 
-			if (rs.next()) {
-				product = new ProductBean();
-				product.setProdId(rs.getString(1));
-				product.setProdName(rs.getString(2));
-				product.setProdType(rs.getString(3));
-				product.setProdInfo(rs.getString(4));
-				product.setProdPrice(rs.getDouble(5));
-				product.setProdQuantity(rs.getInt(6));
-				product.setProdImage(rs.getAsciiStream(7));
-			}
+    public boolean sellNProduct(String prodId, int n) throws SQLException {
+        boolean flag = false;
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        Connection con = DBUtil.createDBConnection();
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
+        PreparedStatement ps = null;
 
-		return product;
-	}
+        try {
 
-	
-	public String updateProductWithoutImage(String prevProductId, ProductBean updatedProduct) throws SQLException {
-		String status = "Product Updation Failed!";
+            ps = con.prepareStatement("update product set pquantity=(pquantity - ?) where pid=? AND active = 1");
 
-		if (!prevProductId.equals(updatedProduct.getProdId())) {
+            ps.setInt(1, n);
 
-			status = "Both Products are Different, Updation Failed!";
+            ps.setString(2, prodId);
 
-			return status;
-		}
+            int k = ps.executeUpdate();
 
-		int prevQuantity = new ProductServiceDAO().getProductQuantity(prevProductId);
-		Connection con = DBUtil.createDBConnection();
+            if (k > 0)
+                flag = true;
+        } catch (SQLException e) {
+            flag = false;
+            e.printStackTrace();
+        }
 
-		PreparedStatement ps = null;
+        DBUtil.closeConnection(con);
+        DBUtil.closeConnection(ps);
 
-	
-			ps = con.prepareStatement("update product set pname=?,ptype=?,pinfo=?,pprice=?,pquantity=? where pid=?");
+        return flag;
+    }
 
-			ps.setString(1, updatedProduct.getProdName());
-			ps.setString(2, updatedProduct.getProdType());
-			ps.setString(3, updatedProduct.getProdInfo());
-			ps.setDouble(4, updatedProduct.getProdPrice());
-			ps.setInt(5, updatedProduct.getProdQuantity());
-			ps.setString(6, prevProductId);
+    public int getProductQuantity(String prodId) throws SQLException {
 
-			int k = ps.executeUpdate();
-			// System.out.println("prevQuantity: "+prevQuantity);
-			if ((k > 0) && (prevQuantity < updatedProduct.getProdQuantity())) {
-				status = "Product Updated Successfully!";
-				// System.out.println("updated!");
-		
-			}
-			else {
-				status = "Product Not available in the store!";
-			}
+        int quantity = 0;
 
-		
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-		// System.out.println("Prod Update status : "+status);
+        Connection con = DBUtil.createDBConnection();
 
-		return status;
-	}
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-	
-	public double getProductPrice(String prodId) throws SQLException {
-		double price = 0;
+        try {
+            ps = con.prepareStatement("select * from product where pid=? AND active = 1");
 
-		Connection con = DBUtil.createDBConnection();
+            ps.setString(1, prodId);
+            rs = ps.executeQuery();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+            if (rs.next()) {
+                quantity = rs.getInt("pquantity");
+            }
 
-		try {
-			ps = con.prepareStatement("select * from product where pid=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-			ps.setString(1, prodId);
-			rs = ps.executeQuery();
+        return quantity;
+    }
+    
+    public List<ProductBean> getProductsByName(String name) throws SQLException {
+        List<ProductBean> products = new ArrayList<>();
 
-			if (rs.next()) {
-				price = rs.getDouble("pprice");
-			}
+        Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            ps = con.prepareStatement("SELECT * FROM product WHERE lower(pname) LIKE ? AND active = 1");
+            ps.setString(1, "%" + name.toLowerCase() + "%");
+            rs = ps.executeQuery();
 
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
+            while (rs.next()) {
+                ProductBean product = new ProductBean();
+                product.setProdId(rs.getString("pid"));
+                product.setProdName(rs.getString("pname"));
+                product.setProdType(rs.getString("ptype"));
+                product.setProdInfo(rs.getString("pinfo"));
+                product.setProdPrice(rs.getDouble("pprice"));
+                product.setProdQuantity(rs.getInt("pquantity"));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream("image")); // Uncomment and adjust if needed
 
-		return price;
-	}
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-	
-	public boolean sellNProduct(String prodId, int n) throws SQLException {
-		boolean flag = false;
+        return products;
+    }
 
-		Connection con = DBUtil.createDBConnection();
+    public ProductBean getProductsByID(String productid) throws SQLException {
+        ProductBean product = null;
 
-		PreparedStatement ps = null;
+        Connection con = DBUtil.createDBConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-		try {
+        try {
+            ps = con.prepareStatement("SELECT * FROM product WHERE pid=? AND active = 1");
+            ps.setString(1, productid);
+            rs = ps.executeQuery();
 
-			ps = con.prepareStatement("update product set pquantity=(pquantity - ?) where pid=?");
+            if (rs.next()) {
+                product = new ProductBean();
+                product.setProdId(rs.getString("pid"));
+                product.setProdName(rs.getString("pname"));
+                product.setProdType(rs.getString("ptype"));
+                product.setProdInfo(rs.getString("pinfo"));
+                product.setProdPrice(rs.getDouble("pprice"));
+                product.setProdQuantity(rs.getInt("pquantity"));
+                // Assuming prodImage is stored as Blob or InputStream in the database
+                // product.setProdImage(rs.getAsciiStream("image")); // Uncomment and adjust if needed
+            }
 
-			ps.setInt(1, n);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConnection(con);
+            DBUtil.closeConnection(ps);
+            DBUtil.closeConnection(rs);
+        }
 
-			ps.setString(2, prodId);
-
-			int k = ps.executeUpdate();
-
-			if (k > 0)
-				flag = true;
-		} catch (SQLException e) {
-			flag = false;
-			e.printStackTrace();
-		}
-
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-
-		return flag;
-	}
-
-	
-	public int getProductQuantity(String prodId) throws SQLException {
-
-		int quantity = 0;
-
-		Connection con = DBUtil.createDBConnection();
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			ps = con.prepareStatement("select * from product where pid=?");
-
-			ps.setString(1, prodId);
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				quantity = rs.getInt("pquantity");
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		DBUtil.closeConnection(con);
-		DBUtil.closeConnection(ps);
-
-		return quantity;
-	}
-	
-	 public List<ProductBean> getProductsByName(String name) throws SQLException {
-	        List<ProductBean> products = new ArrayList<>();
-
-	        Connection con = DBUtil.createDBConnection();
-	        PreparedStatement ps = null;
-	        ResultSet rs = null;
-
-	        try {
-	            ps = con.prepareStatement("SELECT * FROM product WHERE lower(pname) LIKE ?");
-	            ps.setString(1, "%" + name.toLowerCase() + "%");
-	            rs = ps.executeQuery();
-
-	            while (rs.next()) {
-	                ProductBean product = new ProductBean();
-	                product.setProdId(rs.getString("pid"));
-	                product.setProdName(rs.getString("pname"));
-	                product.setProdType(rs.getString("ptype"));
-	                product.setProdInfo(rs.getString("pinfo"));
-	                product.setProdPrice(rs.getDouble("pprice"));
-	                product.setProdQuantity(rs.getInt("pquantity"));
-	                // Assuming prodImage is stored as Blob or InputStream in the database
-	                // product.setProdImage(rs.getAsciiStream("image")); // Uncomment and adjust if needed
-
-	                products.add(product);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } finally {
-	            DBUtil.closeConnection(con);
-	            DBUtil.closeConnection(ps);
-	            DBUtil.closeConnection(rs);
-	        }
-
-	        return products;
-	    }
-
-
-	 public ProductBean getProductsByID(String productid) throws SQLException {
-		    ProductBean product = null;
-
-		    Connection con = DBUtil.createDBConnection();
-		    PreparedStatement ps = null;
-		    ResultSet rs = null;
-
-		    try {
-		        ps = con.prepareStatement("SELECT * FROM product WHERE pid=?");
-		        ps.setString(1, productid);
-		        rs = ps.executeQuery();
-
-		        if (rs.next()) {
-		            product = new ProductBean();
-		            product.setProdId(rs.getString("pid"));
-		            product.setProdName(rs.getString("pname"));
-		            product.setProdType(rs.getString("ptype"));
-		            product.setProdInfo(rs.getString("pinfo"));
-		            product.setProdPrice(rs.getDouble("pprice"));
-		            product.setProdQuantity(rs.getInt("pquantity"));
-		            product.setProdImage(rs.getAsciiStream("image"));
-		        }
-
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    } finally {
-		        DBUtil.closeConnection(con);
-		        DBUtil.closeConnection(ps);
-		        DBUtil.closeConnection(rs);
-		    }
-
-		    return product;
-		}
+        return product;
+    }
 
 }
+       
