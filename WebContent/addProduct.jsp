@@ -13,10 +13,44 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="css/changes.css">
+<script>
+function validateForm() {
+    var name = document.forms["addProductForm"]["name"].value;
+    var type = document.forms["addProductForm"]["type"].value;
+    var info = document.forms["addProductForm"]["info"].value;
+    var price = document.forms["addProductForm"]["price"].value;
+    var quantity = document.forms["addProductForm"]["quantity"].value;
+    var image = document.forms["addProductForm"]["image"].value;
+    
+    var blankRegex = /.*\S.*/;
+
+    if (name == "" || !blankRegex.test(name)) {
+        alert("Product Name must be filled out and cannot be just spaces");
+        return false;
+    }
+    
+    if (info == "" || !blankRegex.test(info)) {
+        alert("Product Info must be filled out and cannot be just spaces");
+        return false;
+    
+    }
+    if (price == "" || isNaN(price) || price <= 0) {
+        alert("Please enter a valid Unit Price");
+        return false;
+    }
+    if (quantity == "" || isNaN(quantity) || quantity < 0) {
+        alert("Please enter a valid Stock Quantity");
+        return false;
+    }
+    if (image == "") {
+        alert("Please select a Product Image");
+        return false;
+    }
+    return true;
+}
+</script>
 </head>
 <body>
-
-
 	<jsp:include page="./fragments/header.jsp" />
 
 	<%
@@ -25,8 +59,9 @@
 	<div class="container">
 		<div class="row"
 			style="margin-top: 35px; margin-left: 2px; margin-right: 2px; margin-bottom: 35px;">
-			<form action="./AddProductSrv" method="post"
-				enctype="multipart/form-data" class="col-md-6 col-md-offset-3"">
+			<form name="addProductForm" action="./AddProductSrv" method="post"
+				enctype="multipart/form-data" class="col-md-6 col-md-offset-3"
+				onsubmit="return validateForm()">
 				<div style="font-weight: bold;" class="text-center">
 					<h2 style="color: green;">Product Addition Form</h2>
 					<%

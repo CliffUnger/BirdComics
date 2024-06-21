@@ -26,8 +26,15 @@
 <%
     List<ProductBean> products = (List<ProductBean>) request.getAttribute("products");
 
-    if (products == null || products.isEmpty()) {
-        response.sendRedirect("./ProductListServlet");
+    if (products == null) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./ProductListServlet");
+        dispatcher.forward(request, response);
+
+        return;
+    }
+    
+
+    if (products.isEmpty()) {
         return;
     }
 %>

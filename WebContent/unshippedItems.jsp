@@ -2,16 +2,20 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page
 	import="com.birdcomics.model.*,java.util.*"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html >
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Home</title>
-<link rel="stylesheet" href="css/changes.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/changes.css">
 </head>
 <body>
 	<%
@@ -22,41 +26,40 @@
 
 	if (userType == null || !userType.equals("admin")) {
 
-		response.sendRedirect("login.jsp?message=Access Denied, Login as admin!!");
+		response.sendRedirect("loginFirst.jsp");
 
 	}
 
-	else if (userName == null || password == null) {
+	if (userName == null || password == null) {
 
-		response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
-
+		response.sendRedirect("loginFirst.jsp");
 	}
 	%>
 
 	<jsp:include page="/fragments/header.jsp" />
 
 	<div class="text-center"
-		style="color: green; font-size: 24px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">Shipped
+		style="color: green; font-size: 24px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">UnShipped
 		Orders</div>
 	<div class="container-fluid">
 		<div class="table-responsive ">
 			<table class="table table-hover table-sm">
 				<thead
-					style="background-color: #115884; color: white; font-size: 18px;">
+					style="background-color: #700fb7; color: white; font-size: 16px;">
 					<tr>
 						<th>TransactionId</th>
 						<th>ProductId</th>
-						<th>Username</th>
+						<th>User Email Id</th>
 						<th>Address</th>
 						<th>Quantity</th>
-						<th>Amount</th>
-						<td>Status</td>
+						<th>Status</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody style="background-color: white;">
 
 					<%
-					OrderServiceDAO orderdao = new OrderServiceDAO ();
+					OrderServiceDAO orderdao = new OrderServiceDAO();
 
 					List<OrderBean> orders = new ArrayList<OrderBean>();
 					orders = orderdao.getAllOrders();
@@ -68,7 +71,7 @@
 						int shipped = order.getShipped();
 						String userId = new TransServiceDAO().getUserId(transId);
 						String userAddr = new UserServiceDAO().getUserAddr(userId);
-						if (shipped != 0) {
+						if (shipped == 0) {
 							count++;
 					%>
 
@@ -78,9 +81,10 @@
 						<td><%=userId%></td>
 						<td><%=userAddr%></td>
 						<td><%=quantity%></td>
-						<td>Rs. <%=order.getAmount()%></td>
-						<td class="text-success" style="font-weight: bold;">SHIPPED</td>
-
+						<td>READY_TO_SHIP</td>
+						<td><a
+							href="ShipmentServlet?orderid=<%=order.getTransactionId()%>&amount=<%=order.getAmount()%>&userid=<%=userId%>&prodid=<%=order.getProductId()%>"
+							class="btn btn-success">SHIP NOW</a></td>
 					</tr>
 
 					<%
@@ -98,6 +102,7 @@
 					<%
 					}
 					%>
+
 				</tbody>
 			</table>
 		</div>
