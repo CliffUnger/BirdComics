@@ -8,37 +8,11 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+	<!-- AuthenticationFilter -->
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>com.birdcomics.controller.AuthenticationFilter</filter-class>
 	</filter>
-	
-	<filter>
-		<filter-name>AdminFilter</filter-name>
-		<filter-class>com.birdcomics.controller.AdminFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>AdminFilter</filter-name>
-		<url-pattern>/adminStock.jsp</url-pattern>
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>AdminFilter</filter-name>
-		<url-pattern>/addProduct.jsp</url-pattern>
-	</filter-mapping>
-	
-	<filter-mapping>
-		<filter-name>AdminFilter</filter-name>
-		<url-pattern>/removeProduct.jsp</url-pattern>
-	</filter-mapping>
-
-	
-	<filter-mapping>
-		<filter-name>AdminFilter</filter-name>
-		<url-pattern>/updateProductById.jsp</url-pattern>
-	</filter-mapping>
-
 
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
@@ -60,15 +34,66 @@
 		<url-pattern>/payment.jsp</url-pattern>
 	</filter-mapping>
 
+	<!-- AdminFilter -->
+	<filter>
+		<filter-name>AdminFilter</filter-name>
+		<filter-class>com.birdcomics.controller.AdminFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/adminStock.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/adminStock</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/addProduct.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/AddProductSrv</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/RemoveProductSrv</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/UpdateProductSrv</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/removeProduct.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/updateProductById.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/updateProduct.jsp</url-pattern>
+	</filter-mapping>
+
+	<!-- EmptyCartRedirectFilter -->
 	<filter>
 		<filter-name>EmptyCartRedirectFilter</filter-name>
 		<filter-class>com.birdcomics.controller.EmptyCartRedirectFilter</filter-class>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>EmptyCartRedirectFilter</filter-name>
 		<url-pattern>/payment.jsp</url-pattern>
 	</filter-mapping>
-
 
 </web-app>
