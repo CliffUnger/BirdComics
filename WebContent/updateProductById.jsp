@@ -74,6 +74,110 @@
 		</div>
 	</div>
 
-	<%@ include file="/fragments/footer.html"%>
+	<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Shopping Center</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/changes.css">
+
+</head>
+
+
+
+
+<body>
+<br>
+<br>
+<br>
+<br>
+<br>
+	<footer class="footer-area footer--light">
+		<div class="footer-big">
+			<!-- start .container -->
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3 col-sm-12">
+						<div class="footer-widget">
+							<div class="widget-about">
+								<h1>Birdcomics</h1>
+								<p>Acquista online e risparmia con le offerte. Tutti i libri bestseller su Birdcomics.</p>
+								<ul class="contact-details">
+									<li>
+										<span class="icon-earphones"></span> Contattaci:
+										<a href="tel:344-755-111">344-755-111</a>
+									</li>
+									<li>
+										<span class="icon-envelope-open"></span>
+										<a href="mailto:support@aazztech.com">support@birdcomics.com</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- Ends: .footer-widget -->
+					</div>
+				
+
+
+					<div class="col-md-3 col-sm-4">
+						<div class="footer-widget">
+							<div class="footer-menu no-padding">
+								<h4 class="footer-widget-title">Pagine</h4>
+								<ul>
+									<li>
+										<a href="index.jsp">Home</a>
+									</li>
+			
+									<li>
+										<a href="privacy.jsp">Privacy Policy</a>
+									</li>
+									
+									
+								</ul>
+							</div>
+							<!-- end /.footer-menu -->
+						</div>
+						<!-- Ends: .footer-widget -->
+					</div>
+					<!-- Ends: .col-lg-3 -->
+
+				</div>
+				<!-- end /.row -->
+			</div>
+			<!-- end /.container -->
+		</div>
+		<!-- end /.footer-big -->
+
+		<div class="mini-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="copyright-text">
+							<p>Copyright 2024 Birdcomics
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	
+
+
+
+
+	<script src="scripts/menu.js"></script>
+
+</body>
+
+</html>
 </body>
 </html>
