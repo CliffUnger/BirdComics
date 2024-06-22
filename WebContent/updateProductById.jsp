@@ -15,6 +15,22 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<%
+	/* Checking the user credentials */
+	String userType = (String) session.getAttribute("usertype");
+	String userName = (String) session.getAttribute("username");
+	String password = (String) session.getAttribute("password");
+
+	if (userType == null || !userType.equals("admin")) {
+		response.sendRedirect("login.jsp?message=Access Denied, Login As Admin!!");
+		return;
+
+	} else if (userName == null || password == null) {
+		response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
+		return;
+	}
+	%>
+
 	<jsp:include page="/fragments/header.jsp" />
 
 	<%
@@ -47,7 +63,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 text-center" style="margin-bottom: 2px;">
-						<a href="adminStock.jsp" class="btn btn-info">Cancel</a>
+						<a href="adminViewProduct.jsp" class="btn btn-info">Cancel</a>
 					</div>
 					<div class="col-md-6 text-center">
 						<button type="submit" class="btn btn-danger">Update
