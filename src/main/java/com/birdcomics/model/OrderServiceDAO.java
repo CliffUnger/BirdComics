@@ -198,14 +198,18 @@ public class OrderServiceDAO {
 		try {
 
 			ps = con.prepareStatement(
-					"SELECT * FROM orders o inner join transactions t on o.orderid = t.transid where username=?");
+				    "SELECT o.*, t.username\r\n"
+				    + "FROM `shopping-cart`.`orders` o\r\n"
+				    + "JOIN `shopping-cart`.`transactions` t ON o.orderid = t.transid\r\n"
+				    + "WHERE t.username = ?");
+				ps.setString(1, emailId);
 			ps.setString(1, emailId);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 
-				OrderBean order = new OrderBean(rs.getString("t.transid"), rs.getString("t.prodid"),
-						rs.getInt("quantity"), rs.getDouble("t.amount"), rs.getInt("shipped"));
+				OrderBean order = new OrderBean(rs.getString("orderid"), rs.getString("prodid"), rs.getInt("quantity"),
+						rs.getDouble("amount"), rs.getInt("shipped"));
 
 				orderList.add(order);
 

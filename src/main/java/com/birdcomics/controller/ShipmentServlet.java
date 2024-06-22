@@ -33,45 +33,34 @@ public class ShipmentServlet extends HttpServlet {
 
         OrderServiceDAO orderdao = new OrderServiceDAO();
         List<OrderBean> orders = null;
-    	List<String> ArrayUserId = new ArrayList<>();
-    	List<String> ArrayUserAddr = new ArrayList<>();
+        List<String> ArrayUserId = new ArrayList<>();
+        List<String> ArrayUserAddr = new ArrayList<>();
+        String search = request.getParameter("search");
+        String date = request.getParameter("date");
+
         try {
-            orders = orderdao.getAllOrders();
+            if (search != null && !search.isEmpty()) {
+                orders = orderdao.getOrdersByUserId(search);
+            } 
+            else {
+                orders = orderdao.getAllOrders();
+            }
+
+            // Populate ArrayUserId and ArrayUserAddr
+            for (OrderBean order : orders) {
+                String transId = order.getTransactionId();
+                String userId = new TransServiceDAO().getUserId(transId);
+                String userAddr = new UserServiceDAO().getUserAddr(userId);
+
+                ArrayUserId.add(userId);
+                ArrayUserAddr.add(userAddr);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        String orderId = request.getParameter("orderid");
-        String prodId = request.getParameter("prodid");
-
-        if (orderId != null && prodId != null) {
-            try {
-                orderdao.shipNow(orderId, prodId);
-                // Aggiorna la lista degli ordini dopo la spedizione
-                orders = orderdao.getAllOrders();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-	    for (OrderBean order : orders) {
-    	    String transId = order.getTransactionId();
-    	    String userId;
-			try {
-				userId = new TransServiceDAO().getUserId(transId);
-				 String userAddr = new UserServiceDAO().getUserAddr(userId);
-		    	    
-		    	    // Aggiungi userId e userAddr agli ArrayList
-		    	    ArrayUserId.add(userId);
-		    	    ArrayUserAddr.add(userAddr);
-		           
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	   
-	    }
-	    request.setAttribute("orders", orders);
+        request.setAttribute("orders", orders);
         request.setAttribute("ArrayUserId", ArrayUserId);
         request.setAttribute("ArrayUserAddr", ArrayUserAddr);
         RequestDispatcher rd = request.getRequestDispatcher("/shippedItems.jsp");

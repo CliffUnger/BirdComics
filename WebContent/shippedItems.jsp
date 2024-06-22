@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Shipped Items</title>
+<title>Shipping Orders</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -21,10 +21,16 @@
     List<OrderBean> orders = (List<OrderBean>) request.getAttribute("orders");
     List<String> ArrayUserId = (List<String>) request.getAttribute("ArrayUserId");
     List<String> ArrayUserAddr = (List<String>) request.getAttribute("ArrayUserAddr");
-
     %>
 
    <jsp:include page="/fragments/header.jsp" />
+   
+   <div class="search-bar">
+    <form class="search-form" action="ShipmentServlet" method="get">
+        <input type="text" name="search" placeholder="Cerca utente per email">
+        <input type="submit" value="Submit">
+    </form>   
+</div>
 
     <div class="container-fluid">
         <div class="text-center"
