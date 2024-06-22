@@ -98,3 +98,5 @@
 
 </body>
 </html>
+  <%@ include file="/fragments/footer.html" %>
+
