@@ -19,6 +19,9 @@
 <body>
     <%
     List<OrderBean> orders = (List<OrderBean>) request.getAttribute("orders");
+    List<String> ArrayUserId = (List<String>) request.getAttribute("ArrayUserId");
+    List<String> ArrayUserAddr = (List<String>) request.getAttribute("ArrayUserAddr");
+
     %>
 
    <jsp:include page="/fragments/header.jsp" />
@@ -26,7 +29,7 @@
     <div class="container-fluid">
         <div class="text-center"
             style="color: green; font-size: 24px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">
-            Shipped Items</div>
+            Orders</div>
         <div class="table-responsive">
             <table class="table table-hover table-sm">
                 <thead style="background-color: #700fb7; color: white; font-size: 16px;">
@@ -43,16 +46,17 @@
                 <tbody style="background-color: white;">
 
                     <% 
-                    boolean hasUnshippedItems = false;
+                    
+       				int index = 0;
                     for (OrderBean order : orders) {
                         String transId = order.getTransactionId();
                         String prodId = order.getProductId();
                         int quantity = order.getQuantity();
                         int shipped = order.getShipped();
-                        String userId = new TransServiceDAO().getUserId(transId);
-                        String userAddr = new UserServiceDAO().getUserAddr(userId);
+                        String userId = ArrayUserId.get(index);
+                        String userAddr = ArrayUserAddr.get(index);
+                        index++;
                         if (shipped == 0) {
-                            hasUnshippedItems = true;
                     %>
 
                     <tr>
@@ -89,8 +93,7 @@
             </table>
         </div>
     </div>
-    
-    </body>
-    
-    </html>
-      <%@ include file="/fragments/footer.html" %>
+
+    <%@ include file="/fragments/footer.html"%>
+</body>
+</html>
