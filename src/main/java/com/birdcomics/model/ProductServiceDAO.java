@@ -293,7 +293,7 @@ public class ProductServiceDAO {
         ResultSet rs = null;
 
         try {
-            ps = con.prepareStatement("select image from product where pid=? AND active = 1");
+            ps = con.prepareStatement("select image from product where pid=?");
 
             ps.setString(1, prodId);
 

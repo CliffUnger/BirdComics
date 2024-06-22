@@ -39,8 +39,7 @@
 								<li><a href="removeProduct.jsp">Rimuovi libro</a></li>
 								<li><a href="updateProductById.jsp">Aggiorna libro</a></li>
 							</ul></li>
-						<li><a href="shippedItems.jsp">Gestione Ordini</a></li>
-						<li><a href="unshippedItems.jsp">Gestione Spedizioni</a></li>
+						<li><a href="ShipmentServlet">Gestione Ordini</a></li>
 						<li><a href="./LogoutSrv">Logout</a></li>
 					</c:when>
 					<c:otherwise>
@@ -50,10 +49,16 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="#" class="genre-link" data-type="mobile">Mobiles</a></li>
-								<li><a href="#" class="genre-link" data-type="tv">TVs</a></li>
-								<li><a href="#" class="genre-link" data-type="laptop">Laptops</a></li>
+								<li><a href="#" class="genre-link" data-type="avventura">Avventura</a></li>
+								<li><a href="#" class="genre-link" data-type="azione">Azione</a></li>
+								<li><a href="#" class="genre-link" data-type="horror">Horror</a></li>
+								<li><a href="#" class="genre-link" data-type="thriller">Thriller</a></li>
+								<li><a href="#" class="genre-link" data-type="fantasy">Fantasy</a></li>
+								<li><a href="#" class="genre-link" data-type="drammatico">Drammatico</a></li>
+								<li><a href="#" class="genre-link" data-type="fantascienza">Fantascienza</a></li>
+
 							</ul></li>
+							
 						<c:choose>
 							<c:when test="${not empty sessionScope.usertype}">
 								<li><a href="CartDetailsServlet">Carrello</a></li>

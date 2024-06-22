@@ -17,7 +17,7 @@
     <script src="scripts/ajax.js"></script>
 </head>
 <body>
-
+<br><br>
 
 <!-- Placeholder for Product Items List -->
 <div id="product-list" class="container">
