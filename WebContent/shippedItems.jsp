@@ -25,6 +25,14 @@
     %>
 
    <jsp:include page="/fragments/header.jsp" />
+   
+   
+   <div class="search-bar">
+    <form class="search-form" action="ShipmentServlet" method="get">
+        <input type="text" name="search" placeholder="Cerca utente per email">
+        <input type="submit" value="Submit">
+    </form>   
+</div>
 
     <div class="container-fluid">
         <div class="text-center"
