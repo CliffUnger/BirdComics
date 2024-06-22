@@ -83,7 +83,7 @@ public class CartServiceDAO {
             ps = con.prepareStatement("SELECT uc.username, uc.prodid, uc.quantity, p.active " +
                                        "FROM usercart uc " +
                                        "JOIN product p ON uc.prodid = p.pid " +
-                                       "WHERE uc.username=? AND p.active = 1");
+                                       "WHERE uc.username=? AND p.active = 1 and p.pquantity > 0");
             ps.setString(1, userId);
             rs = ps.executeQuery();
 
