@@ -1,5 +1,4 @@
-
-        $(document).ready(function() {
+    $(document).ready(function() {
             // Function to load all products via AJAX
             function loadAllProducts() {
                 $.ajax({
