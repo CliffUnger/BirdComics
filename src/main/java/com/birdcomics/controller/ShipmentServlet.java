@@ -2,7 +2,6 @@ package com.birdcomics.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import com.birdcomics.model.OrderBean;
 import com.birdcomics.model.OrderServiceDAO;
-import com.birdcomics.model.TransServiceDAO;
-import com.birdcomics.model.UserServiceDAO;
 
 @WebServlet("/ShipmentServlet")
 public class ShipmentServlet extends HttpServlet {
@@ -33,36 +30,26 @@ public class ShipmentServlet extends HttpServlet {
 
         OrderServiceDAO orderdao = new OrderServiceDAO();
         List<OrderBean> orders = null;
-        List<String> ArrayUserId = new ArrayList<>();
-        List<String> ArrayUserAddr = new ArrayList<>();
-        String search = request.getParameter("search");
-        String date = request.getParameter("date");
-
         try {
-            if (search != null && !search.isEmpty()) {
-                orders = orderdao.getOrdersByUserId(search);
-            } 
-            else {
-                orders = orderdao.getAllOrders();
-            }
-
-            // Populate ArrayUserId and ArrayUserAddr
-            for (OrderBean order : orders) {
-                String transId = order.getTransactionId();
-                String userId = new TransServiceDAO().getUserId(transId);
-                String userAddr = new UserServiceDAO().getUserAddr(userId);
-
-                ArrayUserId.add(userId);
-                ArrayUserAddr.add(userAddr);
-            }
-
+            orders = orderdao.getAllOrders();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        String orderId = request.getParameter("orderid");
+        String prodId = request.getParameter("prodid");
+
+        if (orderId != null && prodId != null) {
+            try {
+                orderdao.shipNow(orderId, prodId);
+                // Aggiorna la lista degli ordini dopo la spedizione
+                orders = orderdao.getAllOrders();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         request.setAttribute("orders", orders);
-        request.setAttribute("ArrayUserId", ArrayUserId);
-        request.setAttribute("ArrayUserAddr", ArrayUserAddr);
         RequestDispatcher rd = request.getRequestDispatcher("/shippedItems.jsp");
         rd.forward(request, response);
     }

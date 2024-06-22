@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.birdcomics.model.OrderDetailsBean;
+import com.birdcomics.model.OrderBean;
 import com.birdcomics.model.OrderServiceDAO;
 
 /**
@@ -42,7 +42,7 @@ public class OrderServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		response.setContentType("text/html");
 		 OrderServiceDAO dao = new OrderServiceDAO();
-		 List<OrderDetailsBean> orders;
+		 List<OrderBean> orders;
 			try {
 				orders = dao.getAllOrderDetails(userName);
 				 request.setAttribute("orders", orders);

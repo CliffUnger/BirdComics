@@ -224,8 +224,8 @@ public class OrderServiceDAO {
 	}
 
 
-	public List<OrderDetailsBean> getAllOrderDetails(String userEmailId) throws SQLException {
-		List<OrderDetailsBean> orderList = new ArrayList<OrderDetailsBean>();
+	public List<OrderBean> getAllOrderDetails(String userEmailId) throws SQLException {
+		List<OrderBean> orderList = new ArrayList<OrderBean>();
 
 		Connection con =  DBUtil.createDBConnection();
 
@@ -241,12 +241,12 @@ public class OrderServiceDAO {
 
 			while (rs.next()) {
 
-				OrderDetailsBean order = new OrderDetailsBean();
+				OrderBean order = new OrderBean();
 				order.setOrderId(rs.getString("orderid"));
 				order.setProdImage(rs.getAsciiStream("image"));
 				order.setProdName(rs.getString("pname"));
 				order.setQty(rs.getString("qty"));
-				order.setAmount(rs.getString("amount"));
+				order.setAmount(Double.parseDouble(rs.getString("amount")));
 				order.setTime(rs.getTimestamp("time"));
 				order.setProductId(rs.getString("prodid"));
 				order.setShipped(rs.getInt("shipped"));

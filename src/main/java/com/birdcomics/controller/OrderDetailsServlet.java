@@ -8,7 +8,8 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import com.birdcomics.model.OrderDetailsBean;
+
+import com.birdcomics.model.OrderBean;
 import com.birdcomics.model.OrderServiceDAO;
 
 @WebServlet("/OrderDetailsServlet")
@@ -22,7 +23,7 @@ public class OrderDetailsServlet extends HttpServlet {
         String userName = (String) request.getSession().getAttribute("username");
         if (userName != null) {
             OrderServiceDAO dao = new OrderServiceDAO();
-            List<OrderDetailsBean> orders;
+            List<OrderBean> orders;
 			try {
 				orders = dao.getAllOrderDetails(userName);
 				 request.setAttribute("orders", orders);

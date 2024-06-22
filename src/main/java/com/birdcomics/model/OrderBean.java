@@ -1,6 +1,8 @@
 package com.birdcomics.model;
 
+import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @SuppressWarnings("serial")
 public class OrderBean implements Serializable {
@@ -10,6 +12,12 @@ public class OrderBean implements Serializable {
 	private int quantity;
 	private Double amount;
 	private int shipped;
+	private String orderId;
+	private String prodName;
+	private String qty;
+	private Timestamp time;
+	private InputStream prodImage;
+	
 
 	public OrderBean() {
 		super();
@@ -71,6 +79,46 @@ public class OrderBean implements Serializable {
 
 	public void setShipped(int shipped) {
 		this.shipped = shipped;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getProdName() {
+		return prodName;
+	}
+
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
+	}
+
+	public String getQty() {
+		return qty;
+	}
+
+	public void setQty(String qty) {
+		this.qty = qty;
+	}
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
+
+	public InputStream getProdImage() {
+		return prodImage;
+	}
+
+	public void setProdImage(InputStream prodImage) {
+		this.prodImage = prodImage;
 	}
 
 }

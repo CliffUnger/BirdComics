@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Shipping Orders</title>
+<title>Shipped Items</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -19,23 +19,14 @@
 <body>
     <%
     List<OrderBean> orders = (List<OrderBean>) request.getAttribute("orders");
-    List<String> ArrayUserId = (List<String>) request.getAttribute("ArrayUserId");
-    List<String> ArrayUserAddr = (List<String>) request.getAttribute("ArrayUserAddr");
     %>
 
    <jsp:include page="/fragments/header.jsp" />
-   
-   <div class="search-bar">
-    <form class="search-form" action="ShipmentServlet" method="get">
-        <input type="text" name="search" placeholder="Cerca utente per email">
-        <input type="submit" value="Submit">
-    </form>   
-</div>
 
     <div class="container-fluid">
         <div class="text-center"
             style="color: green; font-size: 24px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">
-            Orders</div>
+            Shipped Items</div>
         <div class="table-responsive">
             <table class="table table-hover table-sm">
                 <thead style="background-color: #700fb7; color: white; font-size: 16px;">
@@ -52,17 +43,16 @@
                 <tbody style="background-color: white;">
 
                     <% 
-                    
-       				int index = 0;
+                    boolean hasUnshippedItems = false;
                     for (OrderBean order : orders) {
                         String transId = order.getTransactionId();
                         String prodId = order.getProductId();
                         int quantity = order.getQuantity();
                         int shipped = order.getShipped();
-                        String userId = ArrayUserId.get(index);
-                        String userAddr = ArrayUserAddr.get(index);
-                        index++;
+                        String userId = new TransServiceDAO().getUserId(transId);
+                        String userAddr = new UserServiceDAO().getUserAddr(userId);
                         if (shipped == 0) {
+                            hasUnshippedItems = true;
                     %>
 
                     <tr>
@@ -99,7 +89,3 @@
             </table>
         </div>
     </div>
-
-    <%@ include file="/fragments/footer.html"%>
-</body>
-</html>
