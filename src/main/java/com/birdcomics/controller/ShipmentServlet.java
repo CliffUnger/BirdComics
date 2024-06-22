@@ -2,6 +2,7 @@ package com.birdcomics.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpSession;
 
 import com.birdcomics.model.OrderBean;
 import com.birdcomics.model.OrderServiceDAO;
+import com.birdcomics.model.TransServiceDAO;
+import com.birdcomics.model.UserServiceDAO;
 
 @WebServlet("/ShipmentServlet")
 public class ShipmentServlet extends HttpServlet {
@@ -30,6 +33,8 @@ public class ShipmentServlet extends HttpServlet {
 
         OrderServiceDAO orderdao = new OrderServiceDAO();
         List<OrderBean> orders = null;
+    	List<String> ArrayUserId = new ArrayList<>();
+    	List<String> ArrayUserAddr = new ArrayList<>();
         try {
             orders = orderdao.getAllOrders();
         } catch (SQLException e) {
@@ -49,7 +54,26 @@ public class ShipmentServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("orders", orders);
+	    for (OrderBean order : orders) {
+    	    String transId = order.getTransactionId();
+    	    String userId;
+			try {
+				userId = new TransServiceDAO().getUserId(transId);
+				 String userAddr = new UserServiceDAO().getUserAddr(userId);
+		    	    
+		    	    // Aggiungi userId e userAddr agli ArrayList
+		    	    ArrayUserId.add(userId);
+		    	    ArrayUserAddr.add(userAddr);
+		           
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	   
+	    }
+	    request.setAttribute("orders", orders);
+        request.setAttribute("ArrayUserId", ArrayUserId);
+        request.setAttribute("ArrayUserAddr", ArrayUserAddr);
         RequestDispatcher rd = request.getRequestDispatcher("/shippedItems.jsp");
         rd.forward(request, response);
     }
