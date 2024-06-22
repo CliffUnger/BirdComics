@@ -9,81 +9,75 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.birdcomics.model.ProductBean;
 import com.birdcomics.model.ProductServiceDAO;
 
-
-/**
- * Servlet implementation class UpdateProductSrv
- */
 @WebServlet("/UpdateProductSrv")
 public class UpdateProductSrv extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UpdateProductSrv() {
-		super();
+    public UpdateProductSrv() {
+        super();
+    }
 
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String prodid = request.getParameter("prodid");
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+        if (prodid != null && !prodid.isEmpty()) {
+            try {
+                ProductBean product = new ProductServiceDAO().getProductDetails(prodid);
 
-		HttpSession session = request.getSession();
-		String userType = (String) session.getAttribute("usertype");
-		String userName = (String) session.getAttribute("username");
-		String password = (String) session.getAttribute("password");
+                if (product == null) {
+                    // Se il prodotto non esiste, reindirizzo con un messaggio di errore
+                    response.sendRedirect("updateProductById.jsp?message=Please Enter a valid product Id");
+                } else {
+                    // Se il prodotto esiste, imposto l'attributo nella richiesta e reindirizzo
+                    request.setAttribute("product1", product);
+                    RequestDispatcher rd = request.getRequestDispatcher("updateProduct.jsp");
+                    rd.forward(request, response);
+                }
 
-		if (userType == null || !userType.equals("admin")) {
+            } catch (SQLException e) {
+                e.printStackTrace(); // Gestire l'eccezione in modo appropriato
+            }
+        } else {
+            // Gestione del caso in cui il parametro prodid non è presente nella richiesta
+            response.sendRedirect("updateProductById.jsp?message=Please Enter a valid product Id");
+        }
+    }
 
-			response.sendRedirect("login.jsp?message=Access Denied, Login As Admin!!");
-			return;
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String prodId = request.getParameter("pid");
+        String prodName = request.getParameter("name");
+        String prodType = request.getParameter("type");
+        String prodInfo = request.getParameter("info");
+        double prodPrice = Double.parseDouble(request.getParameter("price"));
+        int prodQuantity = Integer.parseInt(request.getParameter("quantity"));
 
-		} else if (userName == null || password == null) {
+        // Creazione dell'oggetto ProductBean con i dati ricevuti dal form
+        ProductBean product = new ProductBean();
+        product.setProdId(prodId);
+        product.setProdName(prodName);
+        product.setProdInfo(prodInfo);
+        product.setProdPrice(prodPrice);
+        product.setProdQuantity(prodQuantity);
+        product.setProdType(prodType);
 
-			response.sendRedirect("login.jsp?message=Session Expired, Login Again!!");
-			return;
-		}
+        // Chiamata al DAO per aggiornare il prodotto nel database
+        ProductServiceDAO dao = new ProductServiceDAO();
+        String status;
+        try {
+            status = dao.updateProductWithoutImage(prodId, product);
+            // Reindirizzamento alla pagina di visualizzazione del prodotto aggiornato con un messaggio di stato
+            response.sendRedirect("updateProductById.jsp?message=" + status);
 
-		// Login success
-
-		String prodId = request.getParameter("pid");
-		String prodName = request.getParameter("name");
-		String prodType = request.getParameter("type");
-		String prodInfo = request.getParameter("info");
-		Double prodPrice = Double.parseDouble(request.getParameter("price"));
-		Integer prodQuantity = Integer.parseInt(request.getParameter("quantity"));
-
-		ProductBean product = new ProductBean();
-		product.setProdId(prodId);
-		product.setProdName(prodName);
-		product.setProdInfo(prodInfo);
-		product.setProdPrice(prodPrice);
-		product.setProdQuantity(prodQuantity);
-		product.setProdType(prodType);
-
-		ProductServiceDAO dao = new ProductServiceDAO();
-
-		String status;
-		try {
-			status = dao.updateProductWithoutImage(prodId, product);
-			RequestDispatcher rd = request
-					.getRequestDispatcher("updateProduct.jsp?prodid=" + prodId + "&message=" + status);
-			rd.forward(request, response);
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		doGet(request, response);
-	}
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'errore, reindirizzamento con messaggio di errore
+            response.sendRedirect("updateProductByd.jsp?message=Error updating product: " + e.getMessage());
+        }
+    }
 }

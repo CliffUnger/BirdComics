@@ -39,8 +39,8 @@
 	<div class="container">
 		<div class="row"
 			style="margin-top: 35px; margin-left: 2px; margin-right: 2px; margin-bottom: 35px">
-			<form action="updateProduct.jsp" method="post"
-				class="col-md-4 col-md-offset-4"">
+			<form action="./UpdateProductSrv" method="get"
+				class="col-md-4 col-md-offset-4">
 				<div style="font-weight: bold;" class="text-center">
 					<h3 style="color: green;">Product Update Form</h3>
 					<%
@@ -74,8 +74,6 @@
 		</div>
 	</div>
 
-	<!DOCTYPE html>
-<html>
 
 <head>
 	<title>Shopping Center</title>
