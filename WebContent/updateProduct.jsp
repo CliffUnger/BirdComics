@@ -74,7 +74,7 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="price">Unit Price</label>
-                        <input type="number" name="price" class="form-control" id="price" value="<%= product.getProdPrice() %>" required>
+                        <input type="number" step="0.01" name="price" class="form-control" id="price" value="<%= product.getProdPrice() %>" required>
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="quantity">Stock Quantity</label>

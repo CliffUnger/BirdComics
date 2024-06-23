@@ -201,7 +201,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 form-group">
-						<label for="last_name">Unit Price</label> <input type="number"
+						<label for="last_name">Unit Price</label> <input type="number" step="0.01"
 							placeholder="Enter Unit Price" name="price" class="form-control"
 							id="price" onkeyup="checkPrice(this)" required>
 						<div>

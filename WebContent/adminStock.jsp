@@ -76,7 +76,7 @@
                                <td><%= soldQuantities.get(index++) %></td>
                                <td><%= product.getProdQuantity() %></td>
                                <td>
-                                   <form method="post" action="./updateProduct.jsp">
+                                   <form method="get" action="./UpdateProductSrv">
                                        <input type="hidden" name="prodid" value="<%= product.getProdId() %>">
                                        <button type="submit" class="btn btn-primary">Update</button>
                                    </form>
