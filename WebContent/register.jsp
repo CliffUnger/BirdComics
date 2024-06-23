@@ -11,6 +11,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="scripts/registerValidation.js"></script>
 </head>
 <%@ include file="./fragments/header.jsp"%>
 <body>
@@ -26,28 +27,35 @@
 						<p style="color: blue;">${param.message}</p>
 					</c:if>
 				</div>
+	
 				<div class="row">
 					<div class="col-md-6 form-group">
 						<label for="first_name">Nome e Cognome</label> <input type="text"
-							name="username" class="form-control" id="first_name" required>
+							name="username" class="form-control" id="username" onkeyup="checkName(this)" required>
+							<div><p id="nameText"></p></div>
+					
 					</div>
 					<div class="col-md-6 form-group">
 						<label for="last_name">Email</label> <input type="email"
-							name="email" class="form-control" id="last_name" required>
+							name="email" class="form-control" id="email"   onkeyup="checkEmail(this)" required>
+							<div><p id="emailText"></p></div>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="address">Address</label>
-					<textarea name="address" class="form-control" id="address" required></textarea>
+					<textarea name="address" class="form-control" id="address" onkeyup="checkAddress(this)" required></textarea>
+					<div><p id="addressText"></p></div>
 				</div>
 				<div class="row">
 					<div class="col-md-6 form-group">
-						<label for="mobile">Mobile</label> <input type="number"
-							name="mobile" class="form-control" id="mobile" required>
+						<label for="mobile">Mobile</label> 
+						<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="mobile" class="form-control" id="mobile"
+						onkeyup="checkMobile(this)" required>
+							<div><p id="mobileText"></p></div>
 					</div>
 					<div class="col-md-6 form-group">
-						<label for="pincode">Pin Code</label> <input type="number"
-							name="pincode" class="form-control" id="pincode" required>
+						<label for="pincode">Pin Code</label> <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"name="pincode" class="form-control" id="pincode" onkeyup="checkPincode(this)" required>
+								<div><p id="pincodeText"></p></div>
 					</div>
 				</div>
 				<div class="row">
