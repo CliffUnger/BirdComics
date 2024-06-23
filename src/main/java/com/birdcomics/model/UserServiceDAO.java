@@ -33,16 +33,16 @@ public class UserServiceDAO {
 	        return status;
 	    }
 
-	    Connection conn = DBUtil.createDBConnection();
+	    Connection con = DBUtil.getConnection();
 	    PreparedStatement ps = null;
 
-	    if (conn != null) {
+	    if (con != null) {
 	        System.out.println("Connected Successfully!");
 	    }
 
 	    try {
 	        // Modifica della query per includere il campo usertype
-	        ps = conn.prepareStatement("INSERT INTO user (email, name, mobile, address, pincode, password, usertype) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	        ps = con.prepareStatement("INSERT INTO user (email, name, mobile, address, pincode, password, usertype) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 	        ps.setString(1, user.getEmail());
 	        ps.setString(2, user.getName());
@@ -63,7 +63,6 @@ public class UserServiceDAO {
 	        e.printStackTrace();
 	    } finally {
 	        DBUtil.closeConnection(ps);
-	        DBUtil.closeConnection(conn);
 	    }
 
 	    return status;
@@ -74,7 +73,7 @@ public class UserServiceDAO {
 	public boolean isRegistered(String emailId) throws SQLException {
 		boolean flag = false;
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -94,7 +93,6 @@ public class UserServiceDAO {
 			e.printStackTrace();
 		}
 
-		DBUtil.closeConnection(con);
 		DBUtil.closeConnection(ps);
 		DBUtil.closeConnection(rs);
 
@@ -105,7 +103,7 @@ public class UserServiceDAO {
 	public String isValidCredential(String emailId, String password) throws SQLException {
 		String status = "Login Denied! Incorrect Username or Password";
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -127,7 +125,6 @@ public class UserServiceDAO {
 			e.printStackTrace();
 		}
 
-		DBUtil.closeConnection(con);
 		DBUtil.closeConnection(ps);
 		DBUtil.closeConnection(rs);
 		return status;
@@ -138,7 +135,7 @@ public class UserServiceDAO {
 
 		UserBean user = null;
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -165,7 +162,6 @@ public class UserServiceDAO {
 			e.printStackTrace();
 		}
 
-		DBUtil.closeConnection(con);
 		DBUtil.closeConnection(ps);
 		DBUtil.closeConnection(rs);
 
@@ -176,7 +172,7 @@ public class UserServiceDAO {
 	public String getFName(String emailId) throws SQLException {
 		String fname = "";
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -206,7 +202,7 @@ public class UserServiceDAO {
 	public String getUserAddr(String userId) throws SQLException {
 		String userAddr = "";
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -231,7 +227,7 @@ public class UserServiceDAO {
 	public String getUserType(String emailId) throws SQLException {
 	    String userType = "";
 
-	    try (Connection con = DBUtil.createDBConnection();
+	    try (Connection con = DBUtil.getConnection();
 	         PreparedStatement ps = con.prepareStatement("select usertype from user where email=?")) {
 
 	        ps.setString(1, emailId);

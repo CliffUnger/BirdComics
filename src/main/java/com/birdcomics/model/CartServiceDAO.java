@@ -14,7 +14,7 @@ public class CartServiceDAO {
     public String addProductToCart(String userId, String prodId, int prodQty) throws SQLException {
         String status = "Failed to Add into Cart";
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -64,7 +64,6 @@ public class CartServiceDAO {
             status = "Error: " + e.getMessage();
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -75,7 +74,7 @@ public class CartServiceDAO {
     public List<CartBean> getAllCartItems(String userId) throws SQLException {
         List<CartBean> items = new ArrayList<>();
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -97,7 +96,6 @@ public class CartServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -108,7 +106,7 @@ public class CartServiceDAO {
     public int getCartCount(String userId) throws SQLException {
         int count = 0;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -123,7 +121,7 @@ public class CartServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
+ 
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -134,7 +132,7 @@ public class CartServiceDAO {
     public String removeProductFromCart(String userId, String prodId) throws SQLException {
         String status = "Product Removal Failed";
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         PreparedStatement ps2 = null;
         ResultSet rs = null;
@@ -183,7 +181,6 @@ public class CartServiceDAO {
             status = "Error: " + e.getMessage();
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
             DBUtil.closeConnection(ps2);
@@ -195,7 +192,7 @@ public class CartServiceDAO {
     public boolean removeAProduct(String userId, String prodId) throws SQLException {
         boolean flag = false;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -211,7 +208,6 @@ public class CartServiceDAO {
             flag = false;
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
         }
 
@@ -221,7 +217,7 @@ public class CartServiceDAO {
     public String updateProductToCart(String userId, String prodId, int prodQty) throws SQLException {
         String status = "Failed to Add into Cart";
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         PreparedStatement ps2 = null;
         ResultSet rs = null;
@@ -268,7 +264,6 @@ public class CartServiceDAO {
             status = "Error: " + e.getMessage();
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
             DBUtil.closeConnection(ps2);
@@ -280,7 +275,7 @@ public class CartServiceDAO {
     public int getProductCount(String userId, String prodId) throws SQLException {
         int count = 0;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -296,7 +291,6 @@ public class CartServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -308,7 +302,7 @@ public class CartServiceDAO {
         int count = 0;
         if (userId == null || itemId == null)
             return 0;
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -325,7 +319,6 @@ public class CartServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }

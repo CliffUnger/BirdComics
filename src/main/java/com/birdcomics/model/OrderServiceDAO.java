@@ -68,7 +68,7 @@ public class OrderServiceDAO {
 	public boolean addOrder(OrderBean order) throws SQLException {
 		boolean flag = false;
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 
@@ -98,7 +98,7 @@ public class OrderServiceDAO {
 	public boolean addTransaction(TransactionBean transaction) throws SQLException {
 		boolean flag = false;
 
-		Connection con = DBUtil.createDBConnection();
+		Connection con = DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 
@@ -127,7 +127,7 @@ public class OrderServiceDAO {
 	public int countSoldItem(String prodId) throws SQLException {
 		int count = 0;
 
-		Connection con =  DBUtil.createDBConnection();
+		Connection con =  DBUtil.getConnection();
 		PreparedStatement ps = null;
 
 		ResultSet rs = null;
@@ -147,7 +147,7 @@ public class OrderServiceDAO {
 			e.printStackTrace();
 		}
 
-		DBUtil.closeConnection(con);
+
 		DBUtil.closeConnection(ps);
 		DBUtil.closeConnection(rs);
 
@@ -158,7 +158,7 @@ public class OrderServiceDAO {
 	public List<OrderBean> getAllOrders() throws SQLException {
 		List<OrderBean> orderList = new ArrayList<OrderBean>();
 
-		Connection con =  DBUtil.createDBConnection();
+		Connection con =  DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -190,7 +190,7 @@ public class OrderServiceDAO {
 	public List<OrderBean> getOrdersByUserId(String emailId) throws SQLException {
 		List<OrderBean> orderList = new ArrayList<OrderBean>();
 
-		Connection con =  DBUtil.createDBConnection();
+		Connection con =  DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -227,7 +227,7 @@ public class OrderServiceDAO {
 	public List<OrderBean> getAllOrderDetails(String userEmailId) throws SQLException {
 		List<OrderBean> orderList = new ArrayList<OrderBean>();
 
-		Connection con =  DBUtil.createDBConnection();
+		Connection con =  DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -266,7 +266,7 @@ public class OrderServiceDAO {
 	public String shipNow(String orderId, String prodId) throws SQLException {
 		String status = "FAILURE";
 
-		Connection con =  DBUtil.createDBConnection();
+		Connection con =  DBUtil.getConnection();
 
 		PreparedStatement ps = null;
 
@@ -287,7 +287,6 @@ public class OrderServiceDAO {
 			e.printStackTrace();
 		}
 
-		DBUtil.closeConnection(con);
 		DBUtil.closeConnection(ps);
 
 		return status;

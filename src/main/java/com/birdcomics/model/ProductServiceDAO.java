@@ -31,7 +31,7 @@ public class ProductServiceDAO {
         if (product.getProdId() == null)
             product.setProdId(IDUtil.generateId());
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
 
@@ -61,7 +61,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
 
         return status;
@@ -70,7 +69,7 @@ public class ProductServiceDAO {
     public String removeProduct(String prodId) throws SQLException {
         String status = "Product Removal Failed!";
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -87,7 +86,6 @@ public class ProductServiceDAO {
             status = "Error: " + e.getMessage();
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
         }
 
@@ -104,7 +102,7 @@ public class ProductServiceDAO {
             return status;
         }
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
 
@@ -129,7 +127,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
 
         return status;
@@ -138,7 +135,7 @@ public class ProductServiceDAO {
     public String updateProductPrice(String prodId, double updatedPrice) throws SQLException {
         String status = "Price Updation Failed!";
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
 
@@ -157,7 +154,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
 
         return status;
@@ -166,7 +162,7 @@ public class ProductServiceDAO {
     public List<ProductBean> getAllProducts() throws SQLException {
         List<ProductBean> products = new ArrayList<>();
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -190,7 +186,6 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -201,7 +196,7 @@ public class ProductServiceDAO {
     public List<ProductBean> getAllProductsByType(String type) throws SQLException {
         List<ProductBean> products = new ArrayList<>();
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -232,7 +227,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
         DBUtil.closeConnection(rs);
 
@@ -242,7 +236,7 @@ public class ProductServiceDAO {
     public List<ProductBean> searchAllProducts(String search) throws SQLException {
         List<ProductBean> products = new ArrayList<>();
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -276,7 +270,6 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -287,7 +280,7 @@ public class ProductServiceDAO {
     public byte[] getImage(String prodId) throws SQLException {
         byte[] image = null;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -306,7 +299,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
         DBUtil.closeConnection(rs);
 
@@ -316,7 +308,7 @@ public class ProductServiceDAO {
     public ProductBean getProductDetails(String prodId) throws SQLException {
         ProductBean product = null;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -342,7 +334,6 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -360,7 +351,7 @@ public class ProductServiceDAO {
             return status;
         }
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
 
@@ -383,7 +374,6 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
         DBUtil.closeConnection(ps);
 
         return status;
@@ -392,7 +382,7 @@ public class ProductServiceDAO {
     public double getProductPrice(String prodId) throws SQLException {
         double price = 0;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -410,7 +400,7 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
+   
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -421,7 +411,7 @@ public class ProductServiceDAO {
     public boolean sellNProduct(String prodId, int n) throws SQLException {
         boolean flag = false;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
 
@@ -442,7 +432,7 @@ public class ProductServiceDAO {
             e.printStackTrace();
         }
 
-        DBUtil.closeConnection(con);
+  
         DBUtil.closeConnection(ps);
 
         return flag;
@@ -452,7 +442,7 @@ public class ProductServiceDAO {
 
         int quantity = 0;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -470,7 +460,7 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
+  
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -481,7 +471,7 @@ public class ProductServiceDAO {
     public List<ProductBean> getProductsByName(String name) throws SQLException {
         List<ProductBean> products = new ArrayList<>();
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -506,7 +496,6 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
@@ -517,7 +506,7 @@ public class ProductServiceDAO {
     public ProductBean getProductsByID(String productid) throws SQLException {
         ProductBean product = null;
 
-        Connection con = DBUtil.createDBConnection();
+        Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -541,7 +530,6 @@ public class ProductServiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeConnection(con);
             DBUtil.closeConnection(ps);
             DBUtil.closeConnection(rs);
         }
