@@ -28,7 +28,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 form-group">
-						<label for="first_name">Username</label> <input type="text"
+						<label for="first_name">Nome e Cognome</label> <input type="text"
 							name="username" class="form-control" id="first_name" required>
 					</div>
 					<div class="col-md-6 form-group">

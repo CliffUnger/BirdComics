@@ -1,94 +1,132 @@
-function validateAddProductForm() {
-    return validateProductForm("addProductForm");
-}
+// validation.js
+	var validName = false;
+	var validDescription = false;
+	var validPrice = false;
+	var validQuantity = false;
+	var validImageType = false;
 
-function validateUpdateProductForm() {
-    return validateProductForm("updateProductForm");
-}
 
-function validateProductForm(formName) {
-    var form = document.forms[formName];
-    var name = form["name"].value.trim();
-    var type = form["type"].value.trim();
-    var info = form["info"].value.trim();
-    var price = form["price"].value.trim();
-    var quantity = form["quantity"].value.trim();
-    var image = form["image"] ? form["image"].value.trim() : null;
 
-    var blankRegex = /.*\S.*/;
+	function checkName(input) {
+		if (input.value.length < 1) {
+			document.getElementById('nameText').innerHTML = "Devi inserire almeno 1 carattere";
+			validName = false;
+			return false;
+		} else if (input.value.length > 250) {
+			document.getElementById('nameText').innerHTML = "Hai inserito troppi caratteri";
+			validName = false;
+			return false;
+		} else {
+			document.getElementById('nameText').innerHTML = "";
+			validName = true;
+			return true;
+		}
+	}
 
-    if (name == "" || !blankRegex.test(name)) {
-        alert("Product Name must be filled out and cannot be just spaces");
-        return false;
-    }
+	function checkDescription(input) {
+		var des = input.value.trim();
+		if (des.length < 1) {
+			document.getElementById('descriptionText').innerHTML = "Devi inserire almeno 1 carattere";
+			validDescription = false;
+			return false;
+		} else if (des.length > 350) {
+			document.getElementById('descriptionText').innerHTML = "Hai inserito troppi caratteri";
+			validDescription = false;
+			return false;
+		} else {
+			document.getElementById('descriptionText').innerHTML = "";
+			validDescription = true;
+			return true;
+		}
+	}
 
-    if (info == "" || !blankRegex.test(info)) {
-        alert("Product info must be filled out and cannot be just spaces");
-        return false;
-    }
-    if (price == "" || isNaN(price) || price <= 0) {
-        alert("Please enter a valid Unit Price");
-        return false;
-    }
-    if (quantity == "" || isNaN(quantity) || quantity <= 0) {
-        alert("Please enter a valid Stock Quantity");
-        return false;
-    }
+	function checkPrice(input) {
+		if (input.value <= 0) {
+			document.getElementById('priceText').innerHTML = "Il prezzo non puo essere 0 o meno";
+			validPrice = false;
+			return false;
+		} else if (input.value > 999.99) {
+			document.getElementById('priceText').innerHTML = "Il prezzo non puo superare 9999.99";
+			validPrice = false;
+			return false;
+		} else if (!/^[\d.]+$/.test(input.value)) {
+			document.getElementById('priceText').innerHTML = "Il prezzo non deve contenere lettere";
+			validPrice = false;
+			return false;
+		} else {
+			document.getElementById('priceText').innerHTML = "";
+			validPrice = true;
+			return true;
+		}
+	}
 
-    if (image != null) {
-        var imageField = form["image"];
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        if (!allowedExtensions.exec(imageField.value)) {
-            alert("Please upload file having extensions .jpeg/.jpg/.png/.gif only.");
-            imageField.value = '';
-            return false;
-        }
-    }
+	function checkQuantity(input) {
+		if (input.value < 0) {
+			document.getElementById('quantityText').innerHTML = "La quantita non può essere negativa";
+			validQuantity = false;
+			return false;
+		} else if (input.value > 999) {
+			document.getElementById('quantityText').innerHTML = "Hai inserito un numero troppo grande";
+			validQuantity = false;
+			return false;
+		} else if (!/^\d+$/.test(input.value)) {
+			document.getElementById('quantityText').innerHTML = "La quantità non deve contenere lettere";
+			validQuantity = false;
+			return false;
+		} else {
+			document.getElementById('quantityText').innerHTML = "";
+			validQuantity = true;
+			return true;
+		}
+	}
 
-    return true;
-}
+	function checkImageType(input) {
+		var file = input.files[0];
+		var fileType = file.type.toLowerCase();
 
-function validateRegisterForm() {
-    var form = document.forms["registerForm"];
-    var username = form["username"].value.trim();
-    var email = form["email"].value.trim();
-    var address = form["address"].value.trim();
-    var mobile = form["mobile"].value.trim();
-    var pincode = form["pincode"].value.trim();
-    var password = form["password"].value.trim();
-    var confirmPassword = form["confirmPassword"].value.trim();
+		if (fileType !== 'image/png' && fileType !== 'image/gif'
+				&& fileType !== 'image/jpeg' && fileType !== 'image/jpg') {
+			document.getElementById('imageText').innerHTML = "Scegli un file PNG, GIF, JPEG o JPG valido";
+			validImageType = false;
+			return false;
+		} else {
+			document.getElementById('imageText').innerHTML = "";
+			validImageType = true;
+			return true;
+		}
+	}
 
-    var blankRegex = /.*\S.*/;
+	function validateForm() {
+		
+	    if (!validName) {
+	        alert("Controlla il campo nome!!");
+	        return false; 
+	    }
 
-    if (username == "" || !blankRegex.test(username)) {
-        alert("Username must be filled out and cannot be just spaces");
-        return false;
-    }
-    if (email == "") {
-        alert("Email must be filled out");
-        return false;
-    }
-    if (address == "") {
-        alert("Address must be filled out");
-        return false;
-    }
-    if (mobile == "" || isNaN(mobile) || mobile.length != 10) {
-        alert("Please enter a valid 10-digit Mobile number");
-        return false;
-    }
-    if (pincode == "" || isNaN(pincode) || pincode.length != 5) {
-        alert("Please enter a valid 5-digit Pin Code");
-        return false;
-    }
-    if (confirmPassword == "") {
-        alert("Confirm Password must be filled out");
-        return false;
-    }
-    if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return false;
-    }
+	    if (!validDescription) {
+	        alert("Controlla il campo descrizione!!");
+	        return false;
+	    }
 
-    return true;
-}
+	    if (!validPrice) {
+	        alert("Controlla il campo prezzo!!");
+	        return false;
+	    }
+
+	    if (!validQuantity) {
+	        alert("Controlla il campo quantità!!");
+	        return false;
+	    }
+	    
+	    if(!validImageType) {
+	    	alert("Errore, scegli un altra foto!");
+	        return false;
+	    	
+	    }
+
+	
+
+	
+	    return true;
+	}
 
