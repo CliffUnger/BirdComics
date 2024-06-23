@@ -91,7 +91,7 @@
 				</div>
 				<div>
 					<div class="col-md-12 form-group">
-						<label for="last_name">Product Image)</label> <input type="file"
+						<label for="last_name">Product Image</label> <input type="file"
 							placeholder="Select Image" name="image" class="form-control"
 							id="image" onchange="checkImageType(this)"
 							accept=".png, .jpeg, .jpg, .gif" required>
@@ -102,8 +102,8 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 text-center" style="margin-bottom: 2px;">
-						<button type="reset" class="btn btn-danger">Reset</button>
+							<div class="col-md-6 text-center" style="margin-bottom: 2px;">
+						<a href="adminStock" class="btn btn-info">Cancel</a>
 					</div>
 					<div class="col-md-6 text-center">
 						<button type="submit" class="btn btn-success">Add Product</button>
