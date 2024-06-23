@@ -29,7 +29,7 @@
 			document.getElementById('descriptionText').innerHTML = "Devi inserire almeno 1 carattere";
 			validDescription = false;
 			return false;
-		} else if (des.length > 350) {
+		} else if (des.length > 700) {
 			document.getElementById('descriptionText').innerHTML = "Hai inserito troppi caratteri";
 			validDescription = false;
 			return false;

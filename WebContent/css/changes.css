@@ -470,9 +470,10 @@ nav .search-icon{
 @media (max-width: 1245px) {
   nav{
     padding: 0 50px;
+    
   }
 }
-@media (max-width: 780px){
+@media (max-width: 850px){
   nav{
     padding: 0px;
   }
@@ -492,6 +493,7 @@ nav .search-icon{
     background: white;
     display: inline-block;
     transition: left 0.3s ease;
+    flex-wrap: nowrap;
   }
   nav .nav-items.active{
     left: 0px;
