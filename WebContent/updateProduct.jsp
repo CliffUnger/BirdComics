@@ -26,7 +26,7 @@
 
     <div class="container">
         <div class="row" style="margin-top: 35px; margin-left: 2px; margin-right: 2px;">
-            <form action="./UpdateProductSrv" method="post" class="col-md-6 col-md-offset-3" onsubmit="return validateForm()">
+            <form action="./UpdateProductSrv" method="post" class="col-md-6 col-md-offset-3">
                 <div style="font-weight: bold;" class="text-center">
                     <div class="form-group">
                         <img src="./ShowImage?pid=<%=product.getProdId()%>" alt="Product Image" height="100px" />
