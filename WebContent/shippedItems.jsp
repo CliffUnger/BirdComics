@@ -27,13 +27,15 @@
 
    <jsp:include page="/fragments/header.jsp" />
    
-   
 <form class="search-form" action="ShipmentServlet" method="get">
     <input type="text" name="search" placeholder="Cerca utente per email">
-    <input type="date" name="startDate" placeholder="Da data">
-    <input type="date" name="endDate" placeholder="A data">
+    <label for="startDate">Da:</label>
+    <input type="date" id="startDate" name="startDate" placeholder="Da data">
+    <label for="endDate">A:</label>
+    <input type="date" id="endDate" name="endDate" placeholder="A data">
     <input type="submit" value="Submit">
 </form>
+
 
 
     <div class="container-fluid">
@@ -42,7 +44,7 @@
             Orders</div>
         <div class="table-responsive">
             <table class="table table-hover table-sm">
-                <thead style="background-color: #700fb7; color: white; font-size: 16px;">
+                <thead style="background-color: #4CAF50; color: white; font-size: 16px;">
                     <tr>
                         <th>TransactionId</th>
                         <th>ProductId</th>
@@ -80,7 +82,7 @@
                         <td><%=quantity%></td>
                         <td>READY_TO_SHIP</td>
                         <td><a href="ShipmentServlet?orderid=<%=order.getTransactionId()%>&userid=<%=userId%>&prodid=<%=order.getProductId()%>"
-                            class="btn btn-success">SHIP NOW</a></td>
+                            class="btn btn-danger">SHIP NOW</a></td>
                     </tr>
 
                     <% 

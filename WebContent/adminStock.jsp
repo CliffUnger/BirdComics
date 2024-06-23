@@ -33,18 +33,16 @@
     style="color: green; font-size: 24px; font-weight: bold; margin-top: 15px; margin-bottom: 15px;">Gestione libri</div>
 
 
-<div class="search-bar">
     <form class="search-form" action="adminStock" method="get">
         <input type="text" name="search" placeholder="Cerca un libro..."">
         <input type="submit" value="Submit">
     </form>   
-</div>
  <% String message = (String) request.getAttribute("message");%>
     <h3 style="text-align: center;"><%= message%></h3>
 <div class="container-fluid">
     <div class="table-responsive">
         <table class="table table-hover table-sm">
-            <thead style="background-color: #2c6c4b; color: white; font-size: 18px;">
+            <thead style="background-color: #4CAF50; color: white; font-size: 18px;">
                 <tr>
                     <th>Image</th>
                     <th>ProductId</th>
