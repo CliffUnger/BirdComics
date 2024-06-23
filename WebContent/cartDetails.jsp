@@ -100,8 +100,8 @@
 					<td colspan="3" style="text-align: center;"></td>
 					<td>
 						<form method="post">
-							<button formaction="userHome.jsp"
-								style="background-color: black; color: white;">Cancella</button>
+							<button formaction="EmptyCartServlet"
+								style="background-color: black; color: white;">Svuota</button>
 						</form>
 					</td>
 					<td colspan="2" align="center">

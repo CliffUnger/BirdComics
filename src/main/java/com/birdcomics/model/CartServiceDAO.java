@@ -325,4 +325,25 @@ public class CartServiceDAO {
 
         return count;
     }
+
+	public void deleteAllCartItems(String userName) throws SQLException {
+
+	        Connection con = DBUtil.getConnection();
+	        PreparedStatement ps = null;
+
+	        try {
+	            ps = con.prepareStatement("DELETE FROM usercart WHERE username=?");
+	            ps.setString(1, userName);
+
+	            ps.executeUpdate();
+
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        } finally {
+	            DBUtil.closeConnection(ps);
+	        }
+
+	    
+	}
 }
+
