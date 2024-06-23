@@ -398,6 +398,7 @@ nav .nav-items li a{
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
+  padding: 5px;
   
 }
 nav .nav-items li a:hover{
