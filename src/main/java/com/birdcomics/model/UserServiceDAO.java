@@ -244,4 +244,33 @@ public class UserServiceDAO {
 	}
 
 
+
+	public void updateUserDetails(String userName, String password, String fullName, long phone, String address,
+			int pinCode) throws SQLException {
+	    Connection con = DBUtil.getConnection();
+	    PreparedStatement ps = null;
+	 
+
+	        // Prepare the SQL update statement
+	        String updateSQL = "UPDATE user SET name = ?, mobile = ?, address = ?, pincode = ? WHERE email = ? AND password = ?";
+	        ps = con.prepareStatement(updateSQL);
+
+	        // Set the parameters for the update statement
+	        ps.setString(1, fullName);
+	        ps.setLong(2, phone);
+	        ps.setString(3, address);
+	        ps.setInt(4, pinCode);
+	        ps.setString(5, userName);
+	        ps.setString(6, password);
+
+	        // Execute the update statement
+	        ps.executeUpdate();
+	   
+	     
+	    }
+		
+	
+
+
+
 }

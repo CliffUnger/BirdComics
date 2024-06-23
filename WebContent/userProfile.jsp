@@ -23,7 +23,6 @@
 
 	<%
 	UserBean user = (UserBean) request.getAttribute("user");
-
 	%>
 
 	<div class="container bg-secondary" style="margin-top: 50px;">
@@ -112,6 +111,13 @@
 				</div>
 			</div>
 		</div>
+		  <div class="text-center">
+            <!-- Aggiungi il tasto "Update Profile" qui -->
+            <br>
+            <br>
+            <!-- Aggiungi il tasto "Update Profile" qui  <a href="updateProfile.jsp?fullName=<%=user.getName()%>&email=<%=user.getEmail()%>&phone=<%=user.getMobile()%>&address=<%=user.getAddress()%>&pinCode=<%=user.getPinCode()%>"
+       class="btn btn-primary">Update Profile</a> -->
+        </div>
 	</div>
 
 	<br>
