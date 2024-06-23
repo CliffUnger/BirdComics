@@ -48,7 +48,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 text-center" style="margin-bottom: 2px;">
-						<a href="adminViewProduct.jsp" class="btn btn-info">Cancel</a>
+						<a href="adminStock" class="btn btn-info">Cancel</a>
 					</div>
 					<div class="col-md-6 text-center">
 						<button type="submit" class="btn btn-danger">Remove
