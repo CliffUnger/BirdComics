@@ -14,6 +14,7 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
+<jsp:include page="/fragments/header.jsp" />
 <body>
 	<%
 	/* Checking the user credentials */
@@ -31,7 +32,7 @@
 	}
 	%>
 
-	<jsp:include page="/fragments/header.jsp" />
+
 
 	<%
 	String message = request.getParameter("message");
@@ -76,4 +77,4 @@
 
 </body>
 </html>
-      <%@ include file="/fragments/footer.html" %>
+<%@ include file="/fragments/footer.html"%>

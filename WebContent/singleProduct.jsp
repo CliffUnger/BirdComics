@@ -13,14 +13,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <title>Libro</title>
+<jsp:include page="/fragments/header.jsp"/>
 <body>
 
 <%
     /* Checking the user credentials */
     ProductBean product = (ProductBean) request.getAttribute("product");
 %>
-
-<jsp:include page="/fragments/header.jsp"/>
 
 <div class="white-box">
     <div class="prod-container">
@@ -62,7 +61,6 @@
     <p><%=product.getProdInfo()%></p>
 </div>
 
-<%@ include file="/fragments/footer.html"%>
-
 </body>
 </html>
+<%@ include file="fragments/footer.html"%>

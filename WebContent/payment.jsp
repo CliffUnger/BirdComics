@@ -16,10 +16,8 @@
 <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
+<jsp:include page="/fragments/header.jsp" />
 <body>
-
-    <jsp:include page="/fragments/header.jsp" />
-
     <div class="container">
         <div class="row"
             style="margin-top: 35px; margin-left: 2px; margin-right: 2px; margin-bottom: 35px">
@@ -76,7 +74,6 @@
         </div>
     </div>
 
-    <%@ include file="fragments/footer.html"%>
-
 </body>
 </html>
+<%@ include file="fragments/footer.html"%>

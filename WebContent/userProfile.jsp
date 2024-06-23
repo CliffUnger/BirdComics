@@ -18,6 +18,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<jsp:include page="fragments/header.jsp" />
 <body>
 
 	<%
@@ -25,23 +26,20 @@
 
 	%>
 
-
-
-	<jsp:include page="fragments/header.jsp" />
-
 	<div class="container bg-secondary" style="margin-top: 50px;">
-		
+
 
 		<div class="row">
 			<div class="col-lg-4">
 				<div class="card mb-4">
 					<div class="card-body text-center">
-						<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="rounded-circle img-fluid"
-							style="width: 150px;">
+						<img
+							src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+							class="rounded-circle img-fluid" style="width: 150px;">
 						<h5 class="my-3">
 							Hello
 							<%=user.getName()%>
-							
+
 						</h5>
 						<!-- <p class="text-muted mb-1">Full Stack Developer</p>
 						<p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
@@ -119,8 +117,6 @@
 	<br>
 	<br>
 	<br>
-
-	<%@ include file="fragments/footer.html"%>
-
 </body>
 </html>
+<%@ include file="fragments/footer.html"%>
