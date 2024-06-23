@@ -79,21 +79,7 @@
                 });
             }
             
-            function searchProducts(keyword) {
-                $.ajax({
-                    url: 'ProductListServlet',
-                    type: 'GET',
-                    data: { search: keyword },
-                    dataType: 'json', // Expecting JSON response
-                    success: function(products) {
-                        renderProducts(products);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', status, error);
-                    }
-                });
-            }
-
+        
             // Event listener for genre links
             $('.genre-link').click(function(event) {
                 event.preventDefault();
