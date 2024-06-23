@@ -1,8 +1,15 @@
 .main-menu {
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dcddde;
+  position: sticky;
+  top: 0;
+  right: 0;
+  background-color: var(--page-bg-color);
+  z-index: 2;
 }
-
 
 .book-sum {
   margin-top: 20px;
@@ -30,17 +37,6 @@
 .genre {
   font-weight: 500;
   font-size: 15px;
-}
-
-.main-menu {
-  white-space: nowrap;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #dcddde;
-  position: sticky;
-  top: 0;
-  right: 0;
-  background-color: var(--page-bg-color);
-  z-index: 2;
 }
 
 .book-types {
@@ -324,16 +320,6 @@ button:hover {
 	}
 }
 
-/* Shopping Cart notification Batch */
-*.icon-blue {
-	color: #0088cc;
-}
-
-*.icon-grey {
-	color: grey;
-}
-
-
 
 i {
     font-size: 18px !important; 
@@ -405,13 +391,14 @@ nav .nav-items{
 }
 nav .nav-items li{
   list-style: none;
-  padding: 0 15px;
+  padding: 0 9px;
 }
 nav .nav-items li a{
   color: black;
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
+  
 }
 nav .nav-items li a:hover{
   color: #ff3d00;
@@ -440,6 +427,7 @@ nav form button{
   border: 1px solid rgba(155,155,155,0.2);
   border-radius: 2px;
   cursor: pointer;
+  
 }
 
 nav form button:hover{
@@ -470,10 +458,9 @@ nav .search-icon{
 @media (max-width: 1245px) {
   nav{
     padding: 0 50px;
-    
   }
 }
-@media (max-width: 850px){
+@media (max-width: 780px){
   nav{
     padding: 0px;
   }
@@ -493,7 +480,6 @@ nav .search-icon{
     background: white;
     display: inline-block;
     transition: left 0.3s ease;
-    flex-wrap: nowrap;
   }
   nav .nav-items.active{
     left: 0px;
