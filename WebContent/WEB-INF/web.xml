@@ -84,7 +84,17 @@
 		<filter-name>AdminFilter</filter-name>
 		<url-pattern>/updateProduct.jsp</url-pattern>
 	</filter-mapping>
-
+	
+		<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/shippedItems.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/ShipmentServlet</url-pattern>
+	</filter-mapping>
+	
 	<!-- EmptyCartRedirectFilter -->
 	<filter>
 		<filter-name>EmptyCartRedirectFilter</filter-name>
