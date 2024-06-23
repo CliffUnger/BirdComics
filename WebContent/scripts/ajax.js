@@ -9,7 +9,7 @@
                         var productListHtml = '';
 
                         // Iterate through products and generate HTML
-                        $.each(products, function(product) {
+                        $.each(products, function(index,product) {
                             productListHtml += '<div class="col-sm-4" style="height: 350px;">';
                             productListHtml += '<div class="thumbnail">';
                             productListHtml += '<a href="./SingleProductServlet?pid=' + product.prodId + '">';
@@ -51,7 +51,7 @@
                         var productListHtml = '';
 
                         // Iterate through products and generate HTML
-                        $.each(products, function(product) {
+                        $.each(products, function(index,product) {
                             productListHtml += '<div class="col-sm-4" style="height: 350px;">';
                             productListHtml += '<div class="thumbnail">';
                             productListHtml += '<a href="./SingleProductServlet?pid=' + product.prodId + '">';
