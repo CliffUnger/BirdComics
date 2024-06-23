@@ -27,8 +27,6 @@
 	<div id="product-list" class="container">
 		<!-- Products will be loaded dynamically here -->
 	</div>
-
-</body>
-
-</html>
 <%@ include file="/fragments/footer.html"%>
+</body>
+</html>

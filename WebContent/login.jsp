@@ -47,9 +47,6 @@
 		</form>
 
 	</div>
-
-
-
-</body>
 <%@ include file="./fragments/footer.html"%>
+</body>
 </html>

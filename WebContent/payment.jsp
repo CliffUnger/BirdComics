@@ -73,7 +73,6 @@
             </form>
         </div>
     </div>
-
+<%@ include file="fragments/footer.html"%>
 </body>
 </html>
-<%@ include file="fragments/footer.html"%>

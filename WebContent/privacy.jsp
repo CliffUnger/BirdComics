@@ -93,5 +93,5 @@
 		</section>
 	</div>
 </body>
-</html>
 <%@ include file="fragments/footer.html"%>
+</html>

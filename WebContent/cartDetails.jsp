@@ -120,8 +120,6 @@
 
 	<br>
 	<br>
-
-
-</body>
 <%@ include file="/fragments/footer.html"%>
+</body>
 </html>
