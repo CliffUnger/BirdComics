@@ -34,6 +34,7 @@ public class ShipmentServlet extends HttpServlet {
         OrderServiceDAO orderdao = new OrderServiceDAO();
         List<String> ArrayUserId = new ArrayList<>();
         List<String> ArrayUserAddr = new ArrayList<>();
+        List<String> ArrayDateTime = new ArrayList<>();
         List<OrderBean> orders = null;
         
         String orderId = request.getParameter("orderid");
@@ -51,24 +52,36 @@ public class ShipmentServlet extends HttpServlet {
         }
         
         String search = request.getParameter("search");
-        String date = request.getParameter("date");
-
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
         try {
-            if (search != null && !search.isEmpty()) {
-                orders = orderdao.getOrdersByUserId(search);
-            } 
-            else {
-                orders = orderdao.getAllOrders();
-            }
-
+        	 if (search != null && !search.isEmpty()) {
+        	        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+        	            // Se entrambe le date sono specificate, utilizza il DAO per ottenere gli ordini per utente e intervallo di date
+        	            orders = orderdao.getOrdersByUserIdAndDate(search, startDate, endDate);
+        	        } else {
+        	            // Se le date non sono specificate, utilizza il DAO per ottenere gli ordini solo per l'utente
+        	            orders = orderdao.getOrdersByUserId(search);
+        	        }
+        	    } else {
+        	        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+        	            // Se solo le date sono specificate senza l'utente, utilizza il DAO per ottenere tutti gli ordini nel intervallo di date
+        	            orders = orderdao.getOrdersByDate(startDate, endDate);
+        	        } else {
+        	            // Se né l'utente né le date sono specificate, ottieni tutti gli ordini
+        	            orders = orderdao.getAllOrders();
+        	        }
+        	    }
             // Populate ArrayUserId and ArrayUserAddr
             for (OrderBean order : orders) {
                 String transId = order.getTransactionId();
                 String userId = new TransServiceDAO().getUserId(transId);
                 String userAddr = new UserServiceDAO().getUserAddr(userId);
+                String dateTime =  new TransServiceDAO().getDateTime(transId);
 
                 ArrayUserId.add(userId);
                 ArrayUserAddr.add(userAddr);
+                ArrayDateTime.add(dateTime);
             }
 
         } catch (SQLException e) {
@@ -80,6 +93,7 @@ public class ShipmentServlet extends HttpServlet {
         request.setAttribute("orders", orders);
         request.setAttribute("ArrayUserId", ArrayUserId);
         request.setAttribute("ArrayUserAddr", ArrayUserAddr);
+        request.setAttribute("ArrayDateTime", ArrayDateTime);
         RequestDispatcher rd = request.getRequestDispatcher("/shippedItems.jsp");
         rd.forward(request, response);
   }

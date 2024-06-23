@@ -21,18 +21,20 @@
     List<OrderBean> orders = (List<OrderBean>) request.getAttribute("orders");
     List<String> ArrayUserId = (List<String>) request.getAttribute("ArrayUserId");
     List<String> ArrayUserAddr = (List<String>) request.getAttribute("ArrayUserAddr");
+    List<String> ArrayDateTime = (List<String>) request.getAttribute("ArrayDateTime");
 
     %>
 
    <jsp:include page="/fragments/header.jsp" />
    
    
-   <div class="search-bar">
-    <form class="search-form" action="ShipmentServlet" method="get">
-        <input type="text" name="search" placeholder="Cerca utente per email">
-        <input type="submit" value="Submit">
-    </form>   
-</div>
+<form class="search-form" action="ShipmentServlet" method="get">
+    <input type="text" name="search" placeholder="Cerca utente per email">
+    <input type="date" name="startDate" placeholder="Da data">
+    <input type="date" name="endDate" placeholder="A data">
+    <input type="submit" value="Submit">
+</form>
+
 
     <div class="container-fluid">
         <div class="text-center"
@@ -46,6 +48,7 @@
                         <th>ProductId</th>
                         <th>User Email Id</th>
                         <th>Address</th>
+                        <th>Date time</th>
                         <th>Quantity</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -63,6 +66,7 @@
                         int shipped = order.getShipped();
                         String userId = ArrayUserId.get(index);
                         String userAddr = ArrayUserAddr.get(index);
+                        String dateTime = ArrayDateTime.get(index);
                         index++;
                         if (shipped == 0) {
                     %>
@@ -72,6 +76,7 @@
                         <td><%=prodId%></td>
                         <td><%=userId%></td>
                         <td><%=userAddr%></td>
+                         <td><%=dateTime%></td>
                         <td><%=quantity%></td>
                         <td>READY_TO_SHIP</td>
                         <td><a href="ShipmentServlet?orderid=<%=order.getTransactionId()%>&userid=<%=userId%>&prodid=<%=order.getProductId()%>"
@@ -87,6 +92,7 @@
                         <td><%=prodId%></td>
                         <td><%=userId%></td>
                         <td><%=userAddr%></td>
+                        <td><%=dateTime%></td>
                         <td><%=quantity%></td>
                         <td>SHIPPED</td>
                         <td></td><!-- Empty action cell for shipped items -->

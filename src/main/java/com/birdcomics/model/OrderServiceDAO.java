@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,6 +223,130 @@ public class OrderServiceDAO {
 
 		return orderList;
 	}
+	
+	
+	public List<OrderBean> getOrdersByDate(String startDate, String endDate) throws SQLException {
+	    List<OrderBean> orderList = new ArrayList<>();
+
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+	    
+        startDate = startDate + " 00:00:00";
+        endDate = endDate + " 23:59:59";
+
+	    try {
+	        con = DBUtil.getConnection();
+	        String query = "SELECT " +
+	                       "    o.orderid, " +
+	                       "    o.prodid, " +
+	                       "    o.quantity AS order_quantity, " +
+	                       "    o.amount AS order_amount, " +
+	                       "    o.shipped, " +
+	                       "    t.transid, " +
+	                       "    t.username, " +
+	                       "    t.time AS transaction_time, " +
+	                       "    t.amount AS transaction_amount " +
+	                       "FROM " +
+	                       "    `shopping-cart`.`orders` o " +
+	                       "JOIN " +
+	                       "    `shopping-cart`.`transactions` t ON o.orderid = t.transid " +
+	                       "WHERE " +
+	                       "    t.time BETWEEN ? AND ?";
+	        
+	        ps = con.prepareStatement(query);
+	        ps.setString(1, startDate);
+	        ps.setString(2, endDate);
+
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            OrderBean order = new OrderBean(
+	                rs.getString("orderid"),
+	                rs.getString("prodid"),
+	                rs.getInt("order_quantity"),
+	                rs.getDouble("order_amount"),
+	                rs.getInt("shipped")
+	            );
+	            orderList.add(order);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Chiudere tutte le risorse aperte
+	        if (rs != null) {
+	            rs.close();
+	        }
+	        if (ps != null) {
+	            ps.close();
+	        }
+	        if (con != null) {
+	            con.close();
+	        }
+	    }
+
+	    return orderList;
+	}
+
+	
+
+
+	public List<OrderBean> getOrdersByUserIdAndDate(String search, String startDate, String endDate) throws SQLException {
+		List<OrderBean> orderList = new ArrayList<OrderBean>();
+
+		Connection con =  DBUtil.getConnection();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		startDate = startDate + " 00:00:00";
+        endDate = endDate + " 23:59:59";
+		 
+
+		try {
+
+			ps = con.prepareStatement("SELECT " +
+                    "    o.orderid, " +
+                    "    o.prodid, " +
+                    "    o.quantity AS order_quantity, " +
+                    "    o.amount AS order_amount, " +
+                    "    o.shipped, " +
+                    "    t.transid, " +
+                    "    t.username, " +
+                    "    t.time AS transaction_time, " +
+                    "    t.amount AS transaction_amount " +
+                    "FROM " +
+                    "    `shopping-cart`.`orders` o " +
+                    "JOIN " +
+                    "    `shopping-cart`.`transactions` t ON o.orderid = t.transid " +
+                    "WHERE " +
+                    "    t.time BETWEEN ? AND ? AND t.username=?");
+		    
+			ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, search);
+
+			rs = ps.executeQuery();
+		 
+
+			while (rs.next()) {
+
+				OrderBean order = new OrderBean(rs.getString("o.orderid"), rs.getString("o.prodid"), rs.getInt("order_quantity"),
+						rs.getDouble("order_amount"), rs.getInt("o.shipped"));
+
+				orderList.add(order);
+
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		return orderList;
+	}
+	
 
 
 	public List<OrderBean> getAllOrderDetails(String userEmailId) throws SQLException {
@@ -235,7 +360,10 @@ public class OrderServiceDAO {
 		try {
 
 			ps = con.prepareStatement(
-					"SELECT  p.pid as prodid, o.orderid as orderid, o.shipped as shipped, p.image as image, p.pname as pname, o.quantity as qty, o.amount as amount, t.time as time FROM orders o, product p, transactions t where o.orderid=t.transid and o.orderid = t.transid and p.pid=o.prodid and t.username=?");
+					"SELECT  p.pid as prodid, o.orderid as orderid, o.shipped as shipped,"
+					+ "p.image as image, p.pname as pname, o.quantity as qty, o.amount as amount, "
+					+ "t.time as time FROM orders o, product p, transactions t where o.orderid=t.transid and o.orderid = t.transid "
+					+ "and p.pid=o.prodid and t.username=?");
 			ps.setString(1, userEmailId);
 			rs = ps.executeQuery();
 
@@ -291,5 +419,7 @@ public class OrderServiceDAO {
 
 		return status;
 	}
+
+	
 
 }
