@@ -1,4 +1,4 @@
-    $(document).ready(function() {
+  $(document).ready(function() {
             // Function to load all products via AJAX
             function loadAllProducts() {
                 $.ajax({
@@ -27,6 +27,7 @@
                             productListHtml += '</div>';
                             productListHtml += '</div>';
                         });
+                        
 
                         // Update the product list container with generated HTML
                         $('#product-list').html(productListHtml);
@@ -104,7 +105,7 @@
                             var productListHtml = '';
 
                             // Itera sui prodotti e genera l'HTML corrispondente
-                            $.each(products, function(product) {
+                            $.each(products, function(index, product) {
                                 productListHtml += '<div class="col-sm-4" style="height: 350px;">';
                                 productListHtml += '<div class="thumbnail">';
                                 productListHtml += '<a href="./SingleProductServlet?pid=' + product.prodId + '">';
